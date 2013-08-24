@@ -56,14 +56,24 @@
 
 Normal (Pick around 6 of the following, make giant / palette-swapped as needed):
 
-* "Crawler" - Don't get touched 
+* "Crawler" - Don't get touched
+** "Green Koopa" / "Red Koopa" 
 * "Shooter"/"Fireballs" - Don't get hit by fireballs
+** "Turret"
+** "Linear moving shooter"
 * "Swooper"/"Annoying flying thing to dodge" - Don't get touched, less readily counterable / avoidable patterns.
+** "Fixed path"
+** "Ambusher"
 * "Alarm Clock"/"Treasure Chest Monster" - Adds +10 seconds
+** Moves like a crawler
 * "Tank"/"Break defenses then defeat" - Defenses broken by sustained or charged attacks? Snipe afterwards
+** Pursues player
 * "AOE Enemy" - Don't get caught in attack range
+** Crawls, uses AOE if it encounters player
 * "Environmental Hazard Maker" - Scatters spikes or like
+** Flies about. Follows player. "Laikatu"
 * "Interface Screw" - Changes order of LURD arrows and direction.
+** Moves via crawling
 
 Boss: 
 
