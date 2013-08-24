@@ -1,4 +1,7 @@
 
+// initialization
+extern void initGL();
+
 // sprite funcs
 extern void beginSprites(float cameraX, float cameraY);
 extern void drawSprite(float x, float y, int texture);

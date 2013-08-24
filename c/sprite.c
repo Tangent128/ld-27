@@ -9,7 +9,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <lua.h>
+#include <lauxlib.h>
 
 #include "stb_image.c"
 #include "game.h"
@@ -127,7 +128,9 @@ static GLuint makeProgram(char* vertexFile, char* fragmentFile) {
 }
 
 // load a PNG image as a texture
-GLuint makeTexture(char* filename) {
+int makeTexture(lua_State *L) {
+	const char* filename = luaL_checkstring(L, 1);
+	
 	GLuint texture;
 
 	// prep texture
@@ -151,8 +154,8 @@ GLuint makeTexture(char* filename) {
 	
 	stbi_image_free(pixels);
 	
-	//printf("make sprite %d\n", texture);
-	return texture;
+	lua_pushinteger(L, texture);
+	return 1;
 }
 
 // === sprites ===
@@ -216,7 +219,11 @@ void beginSprites(float cameraX, float cameraY) {
 }
 
 // public call to draw a sprite
-void drawSprite(float x, float y, GLuint texture) {
+int drawSprite(lua_State *L) {
+
+	float x = luaL_checknumber(L, 1);
+	float y = luaL_checknumber(L, 2);
+	GLuint texture = luaL_checkinteger(L, 3);
 
 	glUniform2f(spriteLocation, x, y);
 	
@@ -246,7 +253,7 @@ void drawBackground( /*...*/ ) {
 // =============
 
 // public call to setup GL constants
-void glInit() {
+void initGL() {
 	
 	// misc. settings
 	glClearColor( 0, 0, 100, 255 );
@@ -263,6 +270,17 @@ void glInit() {
 	
 	
 	
+}
+
+static const luaL_Reg spriteFuncs[] = {
+	{ "makeTexture", &makeTexture },
+	{ "drawSprite", &drawSprite },
+	
+	{ NULL, NULL }
+};
+int luaopen_sprite(lua_State *L) {
+	luaL_newlib(L, spriteFuncs);
+	return 1;
 }
 
 

@@ -28,8 +28,6 @@ static Uint8 kEscape = 0;
 // misc. state
 static int time = 0;
 
-static int sprite;
-
 // major functions ==============
 
 static void initSDL() {
@@ -49,6 +47,10 @@ static void initLua(lua_State *L, int argc, char** argv) {
 	
 	// init Lua
 	luaL_openlibs(L);
+
+	// expose sprite libs
+	luaopen_sprite(L);
+	lua_setglobal(L, "g");
 
 	// load main Lua code	
 	int status = luaL_loadfile(L, "lua/game.lua");
@@ -121,14 +123,14 @@ static void draw() {
 	
 	// clear screen
 	
-	//drawBackground();
+	//
 	
-	beginSprites(0,0);
-		drawSprite(mx,my,sprite);
-	endSprites();
+	//
+	//	drawSprite(mx,my,sprite);
+	//
 
 	// present image to screen	
-	SDL_GL_SwapBuffers();
+	
 }
 
 int main(int argc, char** argv) {
@@ -137,14 +139,12 @@ int main(int argc, char** argv) {
 
 	// Step 0: Init
 	initSDL();
-	glInit(); // in sprite.c
+	initGL(); // in sprite.c
 	initLua(L, argc, argv);
 		
 	// push Lua game loop function onto stack
 	lua_getglobal(L, "gameCycle");
 	
-	// dummy sprite
-	sprite = makeTexture("10seconds.png");
 
 	// The Loop
 	while(1) {
@@ -152,6 +152,8 @@ int main(int argc, char** argv) {
 		input();
 		
 		// Step 2 & 3: "Physics" & Rendering (Lua-driven)
+	drawBackground();
+	beginSprites(0,0);
 		
 		lua_pushvalue(L, -1); // gameLoop function
 		lua_pushinteger(L, time);
@@ -170,8 +172,10 @@ int main(int argc, char** argv) {
 			printf("Error: %s\n", errorMessage);
 		}
 		
-		// Step 3: Render
-		draw();
+	endSprites();
+		
+		// Step 3.9: Flip rendered image to screen
+		SDL_GL_SwapBuffers();
 		
 		// Step 4: Wait (for next frame)
 		SDL_Delay(30);
