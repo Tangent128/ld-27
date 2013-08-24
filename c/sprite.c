@@ -15,11 +15,13 @@
 // max size of shader source handled
 #define MAX_SHADER_SIZE (1024*100)
 
-// hold OpenGL object names
+// hold OpenGL object names for sprite program
 static GLuint spriteVertices;
 static GLuint spriteElements;
-static GLuint spritePosition;
 static GLuint spriteProgram;
+static GLuint spriteCoords;
+static GLuint spriteCamera;
+static GLuint spriteLocation;
 
 //static GLint projection;
 //static GLint color;
@@ -110,6 +112,32 @@ static GLuint makeProgram(char* vertexFile, char* fragmentFile) {
 	return program;
 }
 
+// load a PNG image as a texture
+GLuint makeTexture(char* fileName) {
+	GLuint texture;
+
+	// prep texture
+	glGenTextures(1, & texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	
+	// init dummy texture
+	GLsizei width = 32, height = 32;
+	size_t size = width * height * sizeof(GLubyte) * 4;
+	GLubyte *pixels = malloc(size);
+	
+	int i;
+	for(i = 0; i < size; i++) {
+		pixels[i] = i;
+	}
+	
+	// load pixel data into texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+	
+	free(pixels);
+	
+	return texture;
+}
+
 // === sprites ===
 // ===============
 
@@ -144,24 +172,38 @@ static void spriteInit() {
 	// load shaders
 	spriteProgram = makeProgram("gl/sprite.v.glsl", "gl/sprite.f.glsl");
 	
-	spritePosition = glGetAttribLocation(spriteProgram, "position");
-	//projection = glGetUniformLocation(program, "projection");
-	//color = glGetUniformLocation(program, "color");
+	spriteCamera = glGetUniformLocation(spriteProgram, "camera");
+	spriteLocation = glGetUniformLocation(spriteProgram, "location");
 	
-	// bind data to program?
+	spriteCoords = glGetAttribLocation(spriteProgram, "coords");
+	//color = glGetUniformLocation(program, "color");
 	
 }
 
-// public call to draw a sprite
-void drawSprite() {
+// public call to prepare drawing sprites
+void beginSprites(int cameraX, int cameraY) {
 	glUseProgram(spriteProgram);
 
-	glEnableVertexAttribArray(spritePosition);
-	glVertexAttribPointer(spritePosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
+	// setup sprite geometry
+	glBindBuffer(GL_ARRAY_BUFFER, spriteVertices);
+	glEnableVertexAttribArray(spriteCoords);
+	glVertexAttribPointer(spriteCoords, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, spriteElements);
+	
+	// locate camera
+	glUniform2i(spriteCamera, cameraX, cameraY);
+}
 
-	glDisableVertexAttribArray(spritePosition);
+// public call to draw a sprite
+void drawSprite(int x, int y, GLuint texture) {
+	glUniform2i(spriteLocation, x, y);
+	glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_SHORT, 0);
+}
+
+// public call cleaning up after drawing sprites
+void endSprites() {
+	glDisableVertexAttribArray(spriteCoords);
 }
 
 // === backgrounds ===

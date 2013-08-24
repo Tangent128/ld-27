@@ -25,6 +25,7 @@ static Uint8 kEscape = 0;
 
 // misc. state
 static double time = 0.0;
+static int sprite;
 
 // major functions ==============
 
@@ -42,6 +43,9 @@ static void init() {
 	
 	// init graphics
 	glInit();
+	
+	// dummy sprite
+	sprite = makeTexture("10seconds.png");
 }
 
 static void input() {
@@ -95,7 +99,8 @@ static void tick() {
 	// advance clock
 	time = time + 0.3;
 	
-	printf("Keys: U:%hhd D:%hhd L:%hhd R:%hhd Escape:%hhd Space:%hhd\n", kU, kD, kL, kR, kEscape, kSpace);
+	//printf("Keys: U:%hhd D:%hhd L:%hhd R:%hhd Escape:%hhd Space:%hhd\n", kU, kD, kL, kR, kEscape, kSpace);
+	
 /*  // base one of the thingy's points on the mouse location
   points[0] = mx/320.0 - 1.0;
   points[1] = my/-240.0 + 1.0;
@@ -123,6 +128,10 @@ static void draw() {
 	// clear screen
 	
 	drawBackground();
+	
+	beginSprites(100,100);
+		drawSprite(0,0,sprite);
+	endSprites();
 	
 	/*
 	
