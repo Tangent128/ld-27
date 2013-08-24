@@ -8,6 +8,7 @@ LFLAGS= `sdl-config --libs` $(LUA_LFLAGS) -lpng -lm
 
 HEADERS= c/game.h
 O_FILES= c/game.o c/sprite.o
+PREDEPS= $(LUA_LIB) $(HEADERS)
 
 unspecified:
 	@echo "need to 'make linux.exe', 'make osx.exe', 'make windows.exe', etc"
@@ -21,15 +22,23 @@ osx.exe: $(O_FILES)
 
 # compile
 .SUFFIXES: .c .o
-.c.o: $(LUA_LIB) $(HEADERS)
+.c.o:
 	gcc -c -o $@ $(LUA_CFLAGS) $<
 	
 
 # libs
 $(LUA_LIB):
-	cd c/lua-5.2.2 && make generic
+	cd $(LUA_DIR) && make generic
 
 # files
-c/game.o: c/game.c
-c/sprite.o: c/sprite.c
+c/game.o: c/game.c $(PREDEPS)
+c/sprite.o: c/sprite.c $(PREDEPS)
+
+clean:
+	cd $(LUA_DIR) && make clean
+	rm -f c/*.o
+	rm *.exe
+
+	
+.PHONY: unspecified clean
 
