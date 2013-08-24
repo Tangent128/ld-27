@@ -13,6 +13,7 @@
 * Allow crouching / shielding?
 * Health tied to time? Or independent and HP / wound scaled?
 ** e.x. If struck by enemy, does a "D" drop from "RADD" or does X seconds drop from the clock?
+** how about enemy hits leave you stunned/knocked-back, wasting time>
 
 - Gain more time by:
 * Clearing rooms
@@ -31,6 +32,7 @@
 ** Spikes
 ** Pits
 *** How to handle respawning? Or is game over?
+**** respawn at last stationary ground?
 ** Pushing one way or another (e.x. fans)
 ** Rising/Falling blocks
 * Puzzles?
