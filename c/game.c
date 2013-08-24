@@ -28,6 +28,14 @@ static GLint color;
 static GLuint mx;
 static GLuint my;
 
+// keys
+static Uint8 kU = 0;
+static Uint8 kD = 0;
+static Uint8 kL = 0;
+static Uint8 kR = 0;
+static Uint8 kSpace = 0;
+static Uint8 kEscape = 0;
+
 // misc. state
 static double time = 0;
 static float rgb[3];
@@ -152,9 +160,6 @@ static void init() {
 
 }
 
-static float translatex = 0;
-static float translatey = 0;
-
 static void input() {
 	
 	SDL_Event evt;
@@ -165,26 +170,31 @@ static void input() {
 				exit(0);
 				break;
 			case SDL_KEYDOWN:
+			case SDL_KEYUP:
 				switch(evt.key.keysym.sym) {
 					case SDLK_ESCAPE:
-						SDL_WM_GrabInput(SDL_GRAB_OFF);
+						//SDL_WM_GrabInput(SDL_GRAB_OFF);
+						kEscape = evt.key.state;
 						break;
-				        case SDLK_w:
-					        translatey = translatey + .05;
+					case SDLK_SPACE:
+						kSpace = evt.key.state;
 						break;
-				        case SDLK_s:
-					        translatey = translatey - .05;
+					case SDLK_UP:
+						kU = evt.key.state;
 						break;
-				        case SDLK_a:
-       					        translatex = translatex - .05;
+					case SDLK_DOWN:
+						kD = evt.key.state;
 						break;
-				        case SDLK_d:
-					        translatex = translatex + .05;
+					case SDLK_LEFT:
+						kL = evt.key.state;
+						break;
+					case SDLK_RIGHT:
+						kR = evt.key.state;
 						break;
 				}
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				SDL_WM_GrabInput(SDL_GRAB_ON);
+				//SDL_WM_GrabInput(SDL_GRAB_ON);
 				break;
 			case SDL_MOUSEMOTION:
 				// record the mouse location
@@ -197,19 +207,12 @@ static void input() {
 	}
 }
 
-double oscillate (int interval, int key, float rate) {
-  if ((key % (2 * interval)) > interval) {
-    return rate;
-  } else {
-    return rate * -1;
-  }
-}
-
 static void tick() {
-  // advance clock
-  time = time + 0.3;
-
-  // base one of the thingy's points on the mouse location
+	// advance clock
+	time = time + 0.3;
+	
+	printf("Keys: U:%hhd D:%hhd L:%hhd R:%hhd Escape:%hhd Space:%hhd\n", kU, kD, kL, kR, kEscape, kSpace);
+/*  // base one of the thingy's points on the mouse location
   points[0] = mx/320.0 - 1.0;
   points[1] = my/-240.0 + 1.0;
 
@@ -220,7 +223,7 @@ static void tick() {
   
   // spin camera
     
-  /* double spin = oscillate (10, time, 0.02);*/
+  double spin = oscillate (10, time, 0.02);
   projectionMatrix[3] = translatex;
     
   double spin = time * 0.2;
@@ -228,7 +231,7 @@ static void tick() {
     projectionMatrix[1] = -sin(spin);
     projectionMatrix[4] = sin(spin);
     projectionMatrix[5] = cos(spin);
-    projectionMatrix[7] = translatey;
+    projectionMatrix[7] = translatey;*/
 }
 
 static void draw() {
