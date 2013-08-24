@@ -12,8 +12,8 @@ int debugEnabled = 1;
 // "world" data ===================
 
 // mouse location
-static int mx;
-static int my;
+static float mx;
+static float my;
 
 // keys
 static Uint8 kU = 0;
@@ -86,8 +86,9 @@ static void input() {
 				break;
 			case SDL_MOUSEMOTION:
 				// record the mouse location
-				mx = evt.motion.x;
-				my = evt.motion.y;
+				// and translate to game coordinates
+				mx = evt.motion.x / 32.0;
+				my = (480 - evt.motion.y) / 32.0;
 				break;
 			//default: printf("Event type %d\n", evt.type);
 		}
@@ -129,8 +130,8 @@ static void draw() {
 	
 	drawBackground();
 	
-	beginSprites(100,100);
-		drawSprite(0,0,sprite);
+	beginSprites(0,0);
+		drawSprite(mx,my,sprite);
 	endSprites();
 	
 	/*

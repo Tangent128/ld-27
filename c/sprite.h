@@ -1,7 +1,7 @@
 
 // sprite funcs
-extern void beginSprites(int cameraX, int cameraY);
-extern void drawSprite(int x, int y, int texture);
+extern void beginSprites(float cameraX, float cameraY);
+extern void drawSprite(float x, float y, int texture);
 extern void endSprites();
 
 // background funcs

@@ -7,7 +7,8 @@ attribute vec2 coords;
 
 varying vec2 texCoords;
 
-const screenSize = vec2(640, 480)/2;
+const int tileSize = 32;
+const vec2 screenSize = vec2(640, 480)/(2*tileSize);
 
 void main() {
 	vec2 screenCoords = coords + location - camera;

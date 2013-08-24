@@ -22,6 +22,7 @@ static GLuint spriteProgram;
 static GLuint spriteCoords;
 static GLuint spriteCamera;
 static GLuint spriteLocation;
+static GLuint spriteTexture;
 
 //static GLint projection;
 //static GLint color;
@@ -117,7 +118,7 @@ GLuint makeTexture(char* fileName) {
 	GLuint texture;
 
 	// prep texture
-	glGenTextures(1, & texture);
+	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	
 	// init dummy texture
@@ -127,7 +128,7 @@ GLuint makeTexture(char* fileName) {
 	
 	int i;
 	for(i = 0; i < size; i++) {
-		pixels[i] = i;
+		pixels[i] = 100;
 	}
 	
 	// load pixel data into texture
@@ -176,12 +177,12 @@ static void spriteInit() {
 	spriteLocation = glGetUniformLocation(spriteProgram, "location");
 	
 	spriteCoords = glGetAttribLocation(spriteProgram, "coords");
-	//color = glGetUniformLocation(program, "color");
+	spriteTexture = glGetUniformLocation(spriteProgram, "texture0");
 	
 }
 
 // public call to prepare drawing sprites
-void beginSprites(int cameraX, int cameraY) {
+void beginSprites(float cameraX, float cameraY) {
 	glUseProgram(spriteProgram);
 
 	// setup sprite geometry
@@ -191,14 +192,23 @@ void beginSprites(int cameraX, int cameraY) {
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, spriteElements);
 	
+	// setup texture sampler
+	glActiveTexture(GL_TEXTURE0);
+	glUniform1i(spriteTexture, GL_TEXTURE0);
+	
 	// locate camera
-	glUniform2i(spriteCamera, cameraX, cameraY);
+	glUniform2f(spriteCamera, cameraX, cameraY);
 }
 
 // public call to draw a sprite
-void drawSprite(int x, int y, GLuint texture) {
-	glUniform2i(spriteLocation, x, y);
-	glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_SHORT, 0);
+void drawSprite(float x, float y, GLuint texture) {
+
+	glUniform2f(spriteLocation, x, y);
+	
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(spriteTexture, 0);
+	
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
 
 // public call cleaning up after drawing sprites
