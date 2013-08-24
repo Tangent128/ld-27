@@ -1,7 +1,7 @@
 
 #define GL_GLEXT_PROTOTYPES 1
 
-#if defined(__MACOSX__)
+#if defined(__APPLE__)
 	#include <OpenGL/gl.h>
 #else
 	#include <GL/gl.h>
