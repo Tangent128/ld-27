@@ -1,15 +1,18 @@
 * an escape-the-room-style puzzle game, where each puzzle involves an elaborate set of actions to escape combining a variety of objects in the room. Time loops every ten seconds, so you have to use trial-and-error / rapid exploration
 
 - Sleep motif, 10 seconds on clock until you lose and wake up
+
 - Human protag
 * As such “run and jump” style gameplay
 * Move via LUDR arrows
 * Attack with Space
 ** Gun is easiest attack to animate. May be more apropos to use physical attack (e.x. with pillow)
 * Pause / Quit with Escape
+
 - Gain more time by:
 * Clearing rooms
 * Defeating “alarm clock” enemies
+
 - Rooms randomly generated
 * Get more difficult as more time on clock
 * Random % are "boss rooms"
