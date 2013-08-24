@@ -75,11 +75,15 @@ static GLuint grabShader(char* filename, GLenum shaderType) {
 	// load source into shader
 	GLint codeSize;
 	FILE* file = fopen(filename, "r");
-	GLchar* source = grabFile(file, &codeSize);
+	if(file != NULL) {
+		GLchar* source = grabFile(file, &codeSize);
 	
-	glShaderSource(shader, 1, (const GLchar**) &source, NULL);
-	free(source);
-	fclose(file);
+		glShaderSource(shader, 1, (const GLchar**) &source, NULL);
+		free(source);
+		fclose(file);
+	} else {
+		printf("Could not open shader file %s\n", filename);
+	}
 	
 	// compile shader
 	glCompileShader(shader);
@@ -116,8 +120,8 @@ static void init() {
 	//glEnableClientState(GL_VERTEX_ARRAY);
 
 	// ...shaders...
-	GLuint vertexS = grabShader("hello.v.glsl", GL_VERTEX_SHADER);
-	GLuint fragmentS = grabShader("hello.f.glsl", GL_FRAGMENT_SHADER);
+	GLuint vertexS = grabShader("sprite.v.glsl", GL_VERTEX_SHADER);
+	GLuint fragmentS = grabShader("sprite.f.glsl", GL_FRAGMENT_SHADER);
 	
 	GLuint program = glCreateProgram();
 	glAttachShader(program, vertexS);

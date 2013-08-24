@@ -42,9 +42,9 @@ int main(int argc, char** argv) {
 		case 'f':
 			shaderType = GL_FRAGMENT_SHADER;
 			break;
-		case 'g':
+		/*case 'g':
 			shaderType = GL_GEOMETRY_SHADER;
-			break;
+			break;*/
 		default:
 			usageExit(argv[0]);
 	}
