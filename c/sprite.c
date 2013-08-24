@@ -36,6 +36,17 @@ static GLfloat projectionMatrix[] = {
 	0.0, 0.0, 0.0, 1.0,
 };
 
+static clearGlErrors() {
+	while(glGetError() != GL_NO_ERROR);
+}
+
+static printGlError() {
+	int err = glGetError();
+	if(err) {
+		printf("OpenGL error: %d\n", err);
+	}
+}
+
 // === utility funcs for shader loading ===
 // ========================================
 
@@ -119,6 +130,7 @@ GLuint makeTexture(char* fileName) {
 
 	// prep texture
 	glGenTextures(1, &texture);
+	
 	glBindTexture(GL_TEXTURE_2D, texture);
 	
 	// init dummy texture
@@ -128,14 +140,23 @@ GLuint makeTexture(char* fileName) {
 	
 	int i;
 	for(i = 0; i < size; i++) {
-		pixels[i] = 100;
+		pixels[i] = 100+i;
 	}
+	//printf("%hhu %hhu %hhu \n", pixels[0], pixels[1], pixels[4]);
 	
 	// load pixel data into texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     GL_CLAMP_TO_EDGE);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+	
+	//glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_UNSIGNED_BYTE, pixels);
+	//printf("%hhu %hhu %hhu \n", pixels[0], pixels[1], pixels[2]);
 	
 	free(pixels);
 	
+	printf("make sprite %d\n", texture);
 	return texture;
 }
 
@@ -178,7 +199,6 @@ static void spriteInit() {
 	
 	spriteCoords = glGetAttribLocation(spriteProgram, "coords");
 	spriteTexture = glGetUniformLocation(spriteProgram, "texture0");
-	
 }
 
 // public call to prepare drawing sprites
@@ -194,7 +214,7 @@ void beginSprites(float cameraX, float cameraY) {
 	
 	// setup texture sampler
 	glActiveTexture(GL_TEXTURE0);
-	glUniform1i(spriteTexture, GL_TEXTURE0);
+	glUniform1i(spriteTexture, 0);
 	
 	// locate camera
 	glUniform2f(spriteCamera, cameraX, cameraY);
@@ -205,8 +225,11 @@ void drawSprite(float x, float y, GLuint texture) {
 
 	glUniform2f(spriteLocation, x, y);
 	
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(spriteTexture, 0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	//printf("bind sprite %d\n", texture);
+//printf("%d %d %d %d %d %d\n", spriteCamera, spriteLocation, spriteCoords, spriteTexture, GL_TEXTURE0, texture);
 	
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
