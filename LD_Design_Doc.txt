@@ -23,6 +23,7 @@
 
 * Rooms randomly generated
 * Get more difficult as more time on clock
+** harder room templates, more enemies, longer rooms
 * Random % are "boss rooms"
 ** Bosses should be designed to be clearable as long as you prioritize sniping "alarm clocks"
 * Should have height component
@@ -39,6 +40,12 @@
 
 * What invariants must the procgen seed obey?
 ** How to ensure rooms not unwinnable?
+
+-Some room types to consider:
+* simple terrain + enemy or two
+* complex platforming w/ enemies on harder levels
+* group of enemies, holding key to exit and thus needing defeat
+* "boss" - large, high-HP, possibly-complex-pattern monster, with alarmclocks spawning every 10 seconds for time extension
 
 - Enemy Types:
 
@@ -64,3 +71,9 @@ Boss:
 * "Armored Shooter" - Break through defenses to land hits, regenerates armor. Sends projectiles at player.
 * "Hazard Swooper" - Swoops at player. Drops environmental hazards to make dodging harder.
 * "AOE Crawler" - Rushes at player, attempts to catch up in a ranged attack (e.g. Earthquake)
+
+- stretch concepts:
+* have a few "quests" with NPCs yaking through a series of rooms
+** ex, breather room w/ knight saying "our princess was kidnapped! The dragon went that way!"
+*** rooms shift to cave theme
+*** next boss is a dragon, followed by "hooray! you saved the princess! Have some time!" breather room
