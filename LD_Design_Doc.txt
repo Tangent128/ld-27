@@ -17,3 +17,9 @@
 * Get more difficult as more time on clock
 * Random % are "boss rooms"
 ** Bosses should be designed to be clearable as long as you prioritize sniping "alarm clocks"
+
+- Enemy Types:
+* "Crawler"
+* "Shooter"/"Fireballs"
+* "Swooper"/"Annoying flying thing to dodge"
+* "Alarm Clock" / "Treasure Chest Monster"
