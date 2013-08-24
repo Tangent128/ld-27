@@ -15,5 +15,19 @@
 
 - Rooms randomly generated
 * Get more difficult as more time on clock
+** harder room templates, more enemies, longer rooms
 * Random % are "boss rooms"
 ** Bosses should be designed to be clearable as long as you prioritize sniping "alarm clocks"
+
+-Some room types to consider:
+* simple terrain + enemy or two
+* complex platforming w/ enemies on harder levels
+* group of enemies, holding key to exit and thus needing defeat
+* "boss" - large, high-HP, possibly-complex-pattern monster, with alarmclocks spawning every 10 seconds for time extension
+
+- stretch concept:
+* have a few "quests" with NPCs yaking through a series of rooms
+** ex, breather room w/ knight saying "our princess was kidnapped! The dragon went that way!"
+*** rooms shift to cave theme
+*** next boss is a dragon, followed by "hooray! you saved the princess! Have some time!" breather room
+
