@@ -46,6 +46,7 @@ static void init() {
 	
 	// dummy sprite
 	sprite = makeTexture("10seconds.png");
+	printf("init sprite %d\n", sprite);
 }
 
 static void input() {
