@@ -4,7 +4,7 @@ LUA_LFLAGS= -L$(LUA_DIR)/src -llua
 LUA_LIB= $(LUA_DIR)/src/liblua.a
 
 CFLAGS= $(LUA_CFLAGS)
-LFLAGS= `sdl-config --libs` $(LUA_LFLAGS) -lpng -lm
+LFLAGS= `sdl-config --libs` $(LUA_LFLAGS) -lm
 
 HEADERS= c/game.h
 O_FILES= c/game.o c/sprite.o

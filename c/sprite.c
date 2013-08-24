@@ -140,38 +140,15 @@ GLuint makeTexture(char* filename) {
 	
 	GLubyte *pixels = stbi_load(filename, &width, &height, &components, 4);
 	
-	/*png_image png;
-	memset(&png, 0, sizeof(png_image));
-	png.version = PNG_IMAGE_VERSION;
-
-	png_image_begin_read_from_file(&png, filename);
-	printf("%d %d %s\n", png.width, png.height, png.message);
+		//printf("%hhu %hhu %hhu %hhu \n", pixels[0], pixels[1], pixels[2], pixels[3]);
 	
-	png.format = PNG_FORMAT_RGBA;
+		// load pixel data into texture
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_CLAMP_TO_EDGE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 	
-	size_t size = png.width * png.height * PNG_IMAGE_PIXEL_SIZE(png.format);
-	GLubyte *pixels = malloc(size);
-	memset(pixels, 27, size);
-		
-	png_image_finish_read(&png, NULL, pixels, 0, NULL);*/
-	
-/*	int i;
-	for(i = 0; i < size; i++) {
-		pixels[i] = 100+i;
-	}*/
-	printf("%hhu %hhu %hhu %hhu \n", pixels[0], pixels[1], pixels[2], pixels[3]);
-	
-	// load pixel data into texture
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-	
-	//glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_UNSIGNED_BYTE, pixels);
-	//printf("%hhu %hhu %hhu \n", pixels[0], pixels[1], pixels[2]);
-	
-	//free(pixels);
 	stbi_image_free(pixels);
 	
 	//printf("make sprite %d\n", texture);
