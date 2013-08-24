@@ -6,20 +6,61 @@
 * As such “run and jump” style gameplay
 * Move via LUDR arrows
 * Attack with Space
+** So linear attack direction
 ** Gun is easiest attack to animate. May be more apropos to use physical attack (e.x. with pillow)
+** Charge and basic attacks? 
 * Pause / Quit with Escape
+* Allow crouching / shielding?
+* Health tied to time? Or independent and HP / wound scaled?
+** e.x. If struck by enemy, does a "D" drop from "RADD" or does X seconds drop from the clock?
 
 - Gain more time by:
 * Clearing rooms
+** Sidescrolling and tile-based
 * Defeating “alarm clock” enemies
 
-- Rooms randomly generated
+- Level Design Notes:
+
+* Rooms randomly generated
 * Get more difficult as more time on clock
 * Random % are "boss rooms"
 ** Bosses should be designed to be clearable as long as you prioritize sniping "alarm clocks"
+* Should have height component
+* Environmental hazards:
+** Spikes
+** Pits
+*** How to handle respawning? Or is game over?
+** Pushing one way or another (e.x. fans)
+** Rising/Falling blocks
+* Puzzles?
+* Ladders where cannot attack and vulnerable?
+* Switches to change environment variables? e.x. Friction, gravity?
+* "Warp Tiles"?
+
+* What invariants must the procgen seed obey?
+** How to ensure rooms not unwinnable?
 
 - Enemy Types:
-* "Crawler"
-* "Shooter"/"Fireballs"
-* "Swooper"/"Annoying flying thing to dodge"
-* "Alarm Clock" / "Treasure Chest Monster"
+
+* Things should play off of sleep-based themes. Either by being surreal, related to sleep, or both. Not fully sure what that looks like for these, but here are the mechanical descriptions
+* HP measured in wounds / hits?
+
+Normal (Pick around 6 of the following, make giant / palette-swapped as needed):
+
+* "Crawler" - Don't get touched 
+* "Shooter"/"Fireballs" - Don't get hit by fireballs
+* "Swooper"/"Annoying flying thing to dodge" - Don't get touched, less readily counterable / avoidable patterns.
+* "Alarm Clock"/"Treasure Chest Monster" - Adds +10 seconds
+* "Tank"/"Break defenses then defeat" - Defenses broken by sustained or charged attacks? Snipe afterwards
+* "AOE Enemy" - Don't get caught in attack range
+* "Environmental Hazard Maker" - Scatters spikes or like
+* "Interface Screw" - Changes order of LURD arrows and direction.
+
+Boss: 
+
+* How much HP to give?
+* Are scaled up versions of normal enemies? Or unique?
+
+* "Armored Shooter" - Break through defenses to land hits, regenerates armor. Sends projectiles at player.
+* "Hazard Swooper" - Swoops at player. Drops environmental hazards to make dodging harder.
+* "AOE Crawler" - Rushes at player, attempts to catch up in a ranged attack (e.g. Earthquake)
