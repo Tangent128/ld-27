@@ -22,6 +22,7 @@ BeeSheet = SpriteSheet("bestiary/BeeSheet.png", 2, 2)
 Bee = Sprite(0,0, 1, BeeSheet)
 
 Sheep = require "Sheep"
+Anvil = require "Anvil"
 
 package.path = lpath
 

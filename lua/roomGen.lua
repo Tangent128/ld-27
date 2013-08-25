@@ -42,9 +42,9 @@ function makeDebugRoom(w, h)
 	
 	local room = Room(w,h, content.GreenTiles)
 	
-	room:add(content.Sheep(0,0))
-	room:add(content.Sheep(2,2))
-	room:add(content.Sheep(4,4))
+	--room:add(content.Sheep(0,0))
+	--room:add(content.Sheep(2,2))
+	--room:add(content.Sheep(4,4))
 
 	block(room, 0,0, w,h, world.BLANK)
 	ink(room, 0,1, w,1, world.FLAT)

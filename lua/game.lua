@@ -60,9 +60,9 @@ end
 
 function render()
 	room:render()
-	content.BeeSheet:draw(mouse.x, mouse.y)
-	content.BeeSheet:draw(mouse.x - 2, mouse.y, 2)
-	content.BeeSheet:draw(mouse.x - 1, mouse.y - 2, beat and 1 or 2, true)
+	--content.BeeSheet:draw(mouse.x, mouse.y)
+	--content.BeeSheet:draw(mouse.x - 2, mouse.y, 2)
+	--content.BeeSheet:draw(mouse.x - 1, mouse.y - 2, beat and 1 or 2, true)
 end
 
 end, ...)
