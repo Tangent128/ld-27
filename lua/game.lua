@@ -1,4 +1,8 @@
 
+TILE_SIZE = 32
+SCREEN_WIDTH = 640 / TILE_SIZE
+SCREEN_HEIGHT = 480 / TILE_SIZE
+
 
 -- make error messages more verbose
 local function verboseFailure(body, ...)
@@ -27,7 +31,7 @@ roomGen = require "roomGen"
 local beat = 0;
 local mouse = {}
 
-room = roomGen.makeDebugRoom(15,15)
+room = roomGen.makeDebugRoom(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 if args.testSprite then
 	room:add(content[args.testSprite](8,5))

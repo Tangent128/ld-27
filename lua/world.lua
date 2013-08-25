@@ -34,6 +34,11 @@ function Sprite:fall()
 	
 end
 
+function Sprite:collide()
+	self.lastX = self.x
+	self.lasty = self.y
+end
+
 function Sprite:tick(timeDiff)
 end
 

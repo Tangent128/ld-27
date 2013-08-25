@@ -92,15 +92,19 @@ static void input() {
 						kSpace = evt.key.state;
 						break;
 					case SDLK_UP:
+					case SDLK_w:
 						kU = evt.key.state;
 						break;
 					case SDLK_DOWN:
+					case SDLK_s:
 						kD = evt.key.state;
 						break;
 					case SDLK_LEFT:
+					case SDLK_a:
 						kL = evt.key.state;
 						break;
 					case SDLK_RIGHT:
+					case SDLK_d:
 						kR = evt.key.state;
 						break;
 				}
