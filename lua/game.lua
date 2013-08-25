@@ -41,6 +41,11 @@ end
 
 function tick(time)
 	beat = ( time % 200 ) > 100
+	
+	-- frame length
+	local timeDiff = 30
+	
+	room:tick(timeDiff)
 end
 
 function render()

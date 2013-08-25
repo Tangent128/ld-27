@@ -2,7 +2,7 @@
 local sprite = require "sprite"
 local world = require "world"
 
-local package = package
+local package, require = package, require
 
 local SpriteSheet = sprite.SpriteSheet
 local Sprite = world.Sprite
@@ -21,8 +21,7 @@ package.path = "bestiary/?.lua"
 BeeSheet = SpriteSheet("bestiary/BeeSheet.png", 2, 2)
 Bee = Sprite(0,0, 1, BeeSheet)
 
-SheepSheet = SpriteSheet("bestiary/SheepSheet.png", 1,3);
-Sheep = Sprite(0,0, 1, SheepSheet)
+Sheep = require "Sheep"
 
 package.path = lpath
 

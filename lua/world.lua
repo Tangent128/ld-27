@@ -1,5 +1,6 @@
 
 local setmetatable, pairs, print = setmetatable, pairs, print
+local coroutine = coroutine
 local Class = require "object".Class
 local _ENV = {}
 
@@ -23,17 +24,43 @@ function Sprite:init(x, y, frame, sheet)
 	self.h = self.sheet.scale
 	
 	self.flip = false
+	
+	if self.brain then
+		self.tick = self:wrap(self.brain)
+	end
 end
 
 function Sprite:fall()
 	
 end
 
-function Sprite:tick()
+function Sprite:tick(timeDiff)
 end
 
 function Sprite:render()
 	self.sheet:draw(self.x, self.y, self.frame, self.flip)
+end
+
+-- for use in "brain" coroutines
+
+function Sprite:wrap(func)
+	return coroutine.wrap(func)
+end
+function Sprite:wrapLoop(func)
+	return coroutine.wrap(function()
+		while true do
+			func()
+		end
+	end)
+end
+function Sprite:yield()
+	coroutine.yield()
+	return true
+end
+function Sprite:waitFrames(n)
+	for i = 1,n do
+		coroutine.yield()
+	end
 end
 
 --------------------------------------------------------------------- Rooms
@@ -91,10 +118,10 @@ function Room:getGrid(x,y)
 	return self.grid[index]
 end
 
-function Room:tick()
+function Room:tick(timeDiff)
 	
 	for sprite in pairs(self.sprites) do
-		sprite:tick()
+		sprite:tick(timeDiff)
 	end
 	
 end
