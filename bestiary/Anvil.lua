@@ -57,7 +57,7 @@ function Anvil:brain()
             print "onGround"
         end
         
-        if self.hitCieling and falling == 1 then
+        if self.hitCeiling and falling == 1 then
             switch = (switch + 1) % 2
             falling = (falling + 1) % 2
         end
