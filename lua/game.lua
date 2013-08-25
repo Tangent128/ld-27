@@ -25,7 +25,7 @@ roomGen = require "roomGen"
 local beat = 0;
 local mouse = {}
 
-room = roomGen.makeDebugRoom()
+room = roomGen.makeDebugRoom(15,15)
 
 function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	verboseFailure(function() -- get useful error traceback
