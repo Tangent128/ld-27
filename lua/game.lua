@@ -21,7 +21,6 @@ package.path = "lua/?.lua"
 args = require "flags" {...} {
 	debugRoom = {},
 	testSprite = {arg = true},
---	testSprite = {arg = true, default = "Sheep"},
 }
 
 world = require "world"
@@ -34,7 +33,7 @@ local mouse = {}
 room = roomGen.makeDebugRoom(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 if args.testSprite then
-	room:add(content[args.testSprite](8,5))
+	room:add(content[args.testSprite](SCREEN_WIDTH - 4,5))
 end
 
 function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)

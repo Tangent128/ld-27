@@ -72,7 +72,7 @@ function Sprite:floatPhysics()
 	
 	-- reset physics flags
 	self.collideSide = false
-	self.onGround = self.onGround and self.vy <= 0
+	self.onGround = self.onGround and self.vy == 0
 	self.hitCeiling = false
 	
 	-- run physics
@@ -198,15 +198,15 @@ BLANK = tile(6, false)
 PLAT_LEFT = tile(7)
 PLAT_RIGHT = tile(8)
 PLAT = tile(9)
-STONE_LEFT = tile(10)
-STONE = tile(11)
-FLAT_STONE = tile(12)
-CORNER_RIGHT = tile(13)
-STONE_RIGHT = tile(15)
-CORNER_BOTTOM_LEFT = tile(16)
-BOTTOM = tile(17)
-CORNER_BOTTOM_RIGHT = tile(18)
-CORNER_LEFT = tile(19)
+STONE_LEFT = tile(11)
+STONE = tile(12)
+FLAT_STONE = tile(13)
+CORNER_RIGHT = tile(14)
+STONE_RIGHT = tile(16)
+CORNER_BOTTOM_LEFT = tile(17)
+BOTTOM = tile(18)
+CORNER_BOTTOM_RIGHT = tile(19)
+CORNER_LEFT = tile(20)
 
 Room = Class()
 
