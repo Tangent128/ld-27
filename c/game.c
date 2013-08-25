@@ -140,7 +140,6 @@ int main(int argc, char** argv) {
 		input();
 		
 		// Step 2 & 3: "Physics" & Rendering (Lua-driven)
-	drawBackground();
 	beginSprites(0,0);
 		
 		lua_pushvalue(L, -1); // gameLoop function

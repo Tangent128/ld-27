@@ -1,5 +1,5 @@
 
-local setmetatable, rawget = setmetatable, rawget
+local setmetatable, rawget, select = setmetatable, rawget, select
 
 local _ENV = {}
 
@@ -18,9 +18,9 @@ function instance(self, ...)
 	local object = setmetatable({}, self._meta)
 	object._meta = false
 	
-	local init = rawget(self, "init")
-	if init then
-		init(object, ...)
+	-- only inherit consturctor if called with args
+	if select("#", ...) > 0 or rawget(self, "init") then
+		self.init(object, ...)
 	end
 	
 	return object

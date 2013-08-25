@@ -1,4 +1,16 @@
 
+-- make error messages more verbose
+local function verboseFailure(body)
+	local ok, err = xpcall(body, function(err)
+		return debug.traceback(err, 2)
+	end)
+	if not ok then
+		error(err)
+	end
+end
+
+verboseFailure(function(...)
+
 package.path = "lua/?.lua" --";bestiary/?.lua"
 
 args = require "flags" {...} {
@@ -6,29 +18,25 @@ args = require "flags" {...} {
 	testSprite = {arg = true, default = "10seconds.png"},
 }
 
-sprite = require "sprite"
-local SpriteSheet = sprite.SpriteSheet
-
--- dummy sprite
-local sprite1 = g.makeTexture("10seconds.png");
-local Bee = SpriteSheet("bestiary/BeeSheet.png", 2, 2)
-local Sheep = SpriteSheet("bestiary/SheepSheet.png", 1,3);
-local sprite4 = g.makeTexture("Conehead3.png");
-local sprite5 = g.makeTexture("Sheep.png");
+world = require "world"
+content = require "content"
+roomGen = require "roomGen"
 
 local beat = 0;
 local mouse = {}
 
-function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
-	mouse.x = mx
-	mouse.y = my
+room = roomGen.makeDebugRoom()
 
-	tick(time)
-	render()
-	Sheep:draw(0,0)
-	--g.drawSprite(19,14,sprite5)
-	--g.drawSprite(mx-1,my-1,sprite4)
-    --g.drawSprite(xCur,yCur,sprite3)
+function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
+	verboseFailure(function() -- get useful error traceback
+		
+		mouse.x = mx
+		mouse.y = my
+
+		tick(time)
+		render()
+		
+	end)
 end
 
 function tick(time)
@@ -36,8 +44,11 @@ function tick(time)
 end
 
 function render()
-	Bee:draw(mouse.x, mouse.y)
-	Bee:draw(mouse.x - 2, mouse.y, 2)
-	Bee:draw(mouse.x - 1, mouse.y - 2, beat and 1 or 2, true)
+	room:render()
+	content.BeeSheet:draw(mouse.x, mouse.y)
+	content.BeeSheet:draw(mouse.x - 2, mouse.y, 2)
+	content.BeeSheet:draw(mouse.x - 1, mouse.y - 2, beat and 1 or 2, true)
 end
+
+end, ...)
 
