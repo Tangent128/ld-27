@@ -236,6 +236,12 @@ int drawSprite(lua_State *L) {
 	float scaleY = luaL_checknumber(L, 5);
 	float frame = luaL_checknumber(L, 6) - 1;
 	float frames = luaL_checknumber(L, 7);
+	int flip = lua_toboolean(L, 8);
+
+	if(flip) {
+		frame += frames;
+		frames = -frames;
+	}
 
 	glUniform2f(spriteLocation, x, y);
 	glBindTexture(GL_TEXTURE_2D, texture);

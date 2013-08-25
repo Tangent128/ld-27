@@ -25,11 +25,9 @@ function SpriteSheet:init(filename, scale, count)
 	self.count = count or 1
 end
 
-function SpriteSheet:draw(x, y, frame)
-	drawSprite(x,y, self.texture, self.scale, self.scale, frame or 1, self.count)
+function SpriteSheet:draw(x, y, frame, flip)
+	drawSprite(x,y, self.texture, self.scale, self.scale, frame or 1, self.count, flip or false)
 end
-
-SpriteSheet.rgb = 234
 
 return _ENV
 
