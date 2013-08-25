@@ -10,7 +10,7 @@ args = require "flags" {...} {
 local sprite = g.makeTexture("10seconds.png");
 local sprite2 = g.makeTexture("Bee.png");
 local sprite3 = g.makeTexture("Pitaya.png");
-local sprite4 = g.makeTexture("Conehead.png");
+local sprite4 = g.makeTexture("Conehead3.png");
 local sprite5 = g.makeTexture("Sheep.png");
 
 xCiel = 20
