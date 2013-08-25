@@ -21,19 +21,16 @@ function Sheep:brain()
 	while self:yield() do
 		animate()
 		
-		if self.flip then
-			self.x = self.x + speed
-		else
-			self.x = self.x - speed
+		speed = speed + 0.01
+		
+		self.vx = self.flip and speed or -speed
+		
+		self:gravityPhysics()
+		
+		if self.collideSide then
+			self.flip = not self.flip
 		end
 		
-		if self.x < 0 then
-			self.flip = true
-		end
-		
-		if self.x > self.room.w then
-			self.flip = false
-		end
 	end
 end
 
