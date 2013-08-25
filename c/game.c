@@ -37,7 +37,13 @@ static void initSDL() {
 		exit(-1);
 	}
 	atexit(SDL_Quit);
-
+	
+	// titlebar
+	SDL_WM_SetCaption("Snooze Button", NULL);
+	
+	// hide mouse
+	SDL_ShowCursor(SDL_DISABLE);
+	
 	// get OpenGL Context
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 	SDL_Surface *win = SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
