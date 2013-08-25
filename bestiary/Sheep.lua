@@ -16,7 +16,7 @@ function Sheep:brain()
 		end
 	end)
 	
-	local speed = 0.2
+	local speed = 0.1875
 	
 	while self:yield() do
 		animate()
