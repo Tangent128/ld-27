@@ -67,6 +67,7 @@ static void initLua(lua_State *L, int argc, char** argv) {
 	if(status != LUA_OK) {
 		const char* errorMessage = lua_tostring(L, -1);
 		printf("Error loading main.lua: %s\n", errorMessage);
+		exit(1);
 	}
 	
 }
@@ -119,19 +120,6 @@ static void input() {
 	}
 }
 
-static void draw() {
-	
-	// clear screen
-	
-	//
-	
-	//
-	//	drawSprite(mx,my,sprite);
-	//
-
-	// present image to screen	
-	
-}
 
 int main(int argc, char** argv) {
 
@@ -170,6 +158,7 @@ int main(int argc, char** argv) {
 		if(status != LUA_OK) {
 			const char* errorMessage = lua_tostring(L, -1);
 			printf("Error: %s\n", errorMessage);
+			exit(1);
 		}
 		
 	endSprites();
