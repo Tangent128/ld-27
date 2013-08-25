@@ -2,21 +2,19 @@
 local sprite = require "sprite"
 local world = require "world"
 
-local SheepSheet = sprite.SpriteSheet("bestiary/SheepSheet.png", 2,3);
-local Sheep = world.Sprite(0,0, 1, SheepSheet)
+local HeroSheet = sprite.SpriteSheet("bestiary/ConeheadSheet.png", 2,3);
+local Hero = world.Sprite(0,0, 1, HeroSheet)
 
-function Sheep:brain()
+function Hero:brain()
 	
 	local animate = self:wrapLoop(function()
-		self:waitFrames(10) -- yields 10 times then returns
+		--[[self:waitFrames(10) -- yields 10 times then returns
 	
 		self.frame = self.frame + 1
 		if self.frame > 3 then
 			self.frame = 1
-		end
+		end]]
 	end)
-	
-	local speed = 0.1875
 	
 	while self:yield() do
 		animate()
@@ -34,5 +32,5 @@ function Sheep:brain()
 	end
 end
 
-return Sheep
+return Hero
 

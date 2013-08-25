@@ -15,6 +15,9 @@ GreenTiles = SpriteSheet("gl/tilesetStrip.png", 1, 20)
 
 ------------------------------------------------------------------ Bestiary?
 
+Hero = require "Hero"
+
+-- load from bestiary folder
 local lpath = package.path
 package.path = "bestiary/?.lua"
 
