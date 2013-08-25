@@ -1,6 +1,6 @@
 
 local setmetatable, pairs, print = setmetatable, pairs, print
-local floor, min, max = math.floor, math.min, math.max
+local abs, floor, ceil, min, max = math.abs, math.floor, math.ceil, math.min, math.max
 local coroutine = coroutine
 local Class = require "object".Class
 local _ENV = {}
@@ -65,9 +65,20 @@ local function collideWorldCheck(room, gx, gy)
 	return tile.solid
 end
 function Sprite:floatPhysics()
-	-- calculate number of physics steps
+	-- calculate number of physics steps needed
+	local xGridSpeed = ceil(abs(self.vx))
+	local yGridSpeed = ceil(abs(self.vy))
+	local segments = max(xGridSpeed, yGridSpeed)
 	
-	self:physicsStep(1)
+	-- reset physics flags
+	self.collideSide = false
+	self.onGround = self.onGround and self.vy <= 0
+	self.hitCeiling = false
+	
+	-- run physics
+	for i = 1,segments do
+		self:physicsStep(segments)
+	end
 end
 function Sprite:physicsStep(fraction)
 	-- moves sprite & checks for world collisions,
@@ -79,12 +90,8 @@ function Sprite:physicsStep(fraction)
 	local lastX = self.x
 	local lastY = self.y
 	
-	local x = self.x + self.vx
-	local y = self.y + self.vy
-	
-	self.collideSide = false
-	self.onGround = self.onGround and self.vy <= 0
-	self.hitCeiling = false
+	local x = self.x + self.vx / fraction
+	local y = self.y + self.vy / fraction
 	
 	-- get cells
 	local gLastX = floor(lastX)
