@@ -42,6 +42,9 @@ function Sprite:init(x, y, frame, sheet)
 	end
 end
 
+function Sprite:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
+end
+
 function Sprite:tick(timeDiff)
 end
 

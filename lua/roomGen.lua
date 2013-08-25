@@ -49,7 +49,7 @@ function makeDebugRoom(w, h)
 	block(room, 0,0, w,h, world.BLANK)
 	ink(room, 0,1, w,1, world.FLAT)
 	ink(room, 0,0, w,0, world.SOLID)
-	ink(room, 8,0, 8,4, world.STONE)
+	block(room, 8,0, 2,4, world.STONE)
 
 	--for x = 1,room.
 	

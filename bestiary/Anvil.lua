@@ -45,7 +45,6 @@ function Anvil:brain()
 
 		if self.onGround then
 			falling = false
-			print "onGround"
 		end
 
 		if self.hitCeiling then
