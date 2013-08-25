@@ -7,8 +7,7 @@ Anvil = world.Sprite(0,0, 1, AnvilSheet)
 
 function Anvil:brain()
 	
-    local switch = 0
-    local falling = 0
+	local falling = true
 
 	local animate = self:wrapLoop(function()
 		self:waitFrames(10) -- yields 10 times then returns
@@ -35,33 +34,24 @@ function Anvil:brain()
 
 	while self:yield() do
 		
-        animate()
-        
-        if switch == 0 then
-		
-            self:gravityPhysics()
-		
-        end
-        
-        if switch == 1 then
+		animate()
+		  
+		if falling then
+			self:gravityPhysics()
+		else
+			self.vy = 0.2
+			self:floatPhysics()
+		end
 
-            self:floatPhysics()
-        
-            self.vy = 0.2
-        
-        end
-        
-        if self.onGround and falling == 0 then
-            switch = (switch + 1) % 2
-            falling = (falling + 1) % 2
-            print "onGround"
-        end
-        
-        if self.hitCeiling and falling == 1 then
-            switch = (switch + 1) % 2
-            falling = (falling + 1) % 2
-        end
-		
+		if self.onGround then
+			falling = false
+			print "onGround"
+		end
+
+		if self.hitCeiling then
+			falling = true
+		end
+
 	end
 end
 
