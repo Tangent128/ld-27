@@ -52,24 +52,24 @@ static void initLua(lua_State *L, int argc, char** argv) {
 	luaopen_sprite(L);
 	lua_setglobal(L, "g");
 
-	// load main Lua code	
+	// load main Lua code
 	int status = luaL_loadfile(L, "lua/game.lua");
 	if(status == LUA_OK) {
 		// push command-line args
 		lua_checkstack(L, argc);
 		int i;
-		for(i = 0; i < argc; i++) {
+		for(i = 1; i < argc; i++) { // i = 1: skip program name
 			lua_pushstring(L, argv[i]);
 		}
 		
-		status = lua_pcall(L, argc, 0, 0);
+		status = lua_pcall(L, argc - 1, 0, 0); // argc - 1: skip program name
 	}
 	if(status != LUA_OK) {
 		const char* errorMessage = lua_tostring(L, -1);
-		printf("Error loading main.lua: %s\n", errorMessage);
+		printf("Error loading main.lua: %s %d\n", errorMessage, argc);
 		exit(1);
 	}
-	
+
 }
 
 static void input() {
