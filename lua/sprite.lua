@@ -26,7 +26,7 @@ function SpriteSheet:init(filename, scale, count)
 end
 
 function SpriteSheet:draw(x, y, frame)
-	drawSprite(x,y, self.texture)
+	drawSprite(x,y, self.texture, self.scale, self.scale, frame or 1, self.count)
 end
 
 SpriteSheet.rgb = 234

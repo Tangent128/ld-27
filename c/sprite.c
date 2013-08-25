@@ -25,6 +25,9 @@ static GLuint spriteProgram;
 static GLuint spriteCoords;
 static GLuint spriteCamera;
 static GLuint spriteLocation;
+static GLuint spriteScale;
+static GLuint spriteFrameNum;
+static GLuint spriteFrameCount;
 static GLuint spriteTexture;
 
 //static GLint projection;
@@ -192,11 +195,16 @@ static void spriteInit() {
 	// load shaders
 	spriteProgram = makeProgram("gl/sprite.v.glsl", "gl/sprite.f.glsl");
 	
+	spriteCoords = glGetAttribLocation(spriteProgram, "coords");
+
 	spriteCamera = glGetUniformLocation(spriteProgram, "camera");
 	spriteLocation = glGetUniformLocation(spriteProgram, "location");
 	
-	spriteCoords = glGetAttribLocation(spriteProgram, "coords");
 	spriteTexture = glGetUniformLocation(spriteProgram, "texture0");
+	spriteScale = glGetUniformLocation(spriteProgram, "scale");
+	spriteFrameNum = glGetUniformLocation(spriteProgram, "frame");
+	spriteFrameCount = glGetUniformLocation(spriteProgram, "frames");
+
 }
 
 // public call to prepare drawing sprites
@@ -224,12 +232,19 @@ int drawSprite(lua_State *L) {
 	float x = luaL_checknumber(L, 1);
 	float y = luaL_checknumber(L, 2);
 	GLuint texture = luaL_checkinteger(L, 3);
+	float scaleX = luaL_checknumber(L, 4);
+	float scaleY = luaL_checknumber(L, 5);
+	float frame = luaL_checknumber(L, 6) - 1;
+	float frames = luaL_checknumber(L, 7);
 
 	glUniform2f(spriteLocation, x, y);
-	
-	glActiveTexture(GL_TEXTURE0);
-	glUniform1i(spriteTexture, 0);
 	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glUniform2f(spriteScale, scaleX, scaleY);
+	glUniform1f(spriteFrameNum, frame);
+	glUniform1f(spriteFrameCount, frames);
+	
+	
 	//printf("bind sprite %d\n", texture);
 //printf("%d %d %d %d %d %d\n", spriteCamera, spriteLocation, spriteCoords, spriteTexture, GL_TEXTURE0, texture);
 	
