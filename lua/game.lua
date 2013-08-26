@@ -50,20 +50,23 @@ end
 
 paused = false
 lost = false
+newrun = true
 
 -- Lua side of game loop
 function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	verboseFailure(function() -- get useful error traceback
-		
-        if kEscape and not paused then
+
+
+        if kEscape then
             paused = true
         end
         
-        if kSpace and paused then
+        if kSpace then
             paused = false
+            newrun = false
         end
 
-		if not paused --[[and not lost]] then
+		if not paused and not newrun --[[and not lost]] then
 			world.timer = world.timer - 30
 			if world.timer <= 0 then
 				lost = true
@@ -76,9 +79,14 @@ function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 		
 		render()
 		
-		if paused then
+		if paused and not newrun then
 			content.PauseScreen:fullscreen()
 		end
+        
+        if newrun then
+            content.StartScreen:fullscreen()
+        end
+
 	end)
 end
 
