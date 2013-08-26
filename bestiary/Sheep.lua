@@ -32,6 +32,10 @@ function Sheep:brain()
 			speed = 0.1875
 		end
 		
+		if self:intersect(world.hero) then
+			print "BAAAAA!"
+		end
+		
 	end
 end
 

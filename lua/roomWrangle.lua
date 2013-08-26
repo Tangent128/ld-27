@@ -1,7 +1,9 @@
 
 local pairs, print = pairs, print
 local content = require "content"
+local sprite = require "sprite"
 local world = require "world"
+local roomGen = require "roomGen"
 
 local SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_WIDTH, SCREEN_HEIGHT
 
@@ -58,6 +60,9 @@ function Camera:renderView()
 		room:renderSprites(dx - room.x, dy - room.y)
 	end
 end
+
+FlagSheet = sprite.SpriteSheet("gl/flag.png", 3, 2)
+Flag = world.Sprite(0,0, 1, FlagSheet)
 
 return _ENV
 

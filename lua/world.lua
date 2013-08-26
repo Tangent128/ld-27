@@ -73,6 +73,18 @@ function Sprite:locateHero()
 	end
 end
 
+function Sprite:intersect(other)
+	local bottom = self.y
+	local top = bottom + self.h
+
+	if self.x + self.w < other.x then return false end
+	if self.x > other.x + other.w then return false end
+	if self.y + self.h < other.y then return false end
+	if self.y > other.y + other.h then return false end
+	
+	return true
+end
+
 function Sprite:spawn(dx, dy, obj)
 	obj.x = self.x + dx
 	obj.y = self.y + dy
