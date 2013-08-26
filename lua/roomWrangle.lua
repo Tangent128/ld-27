@@ -35,9 +35,11 @@ function Camera:brain()
 		-- springy cam, average offsets into it instead of setting
 		self.vx = (self.vx*3 + dx) / 4
 		self.vy = (self.vy*3 + dy) / 4
-		
+
+world.d = true
 		self:gravityPhysics(true) -- only check against world bounds
-		--print(self.x, self.y, self.vx, self.vy)
+world.d = false
+		--print(self.x, self.y, self.vx, self.vy, self.w, self.room.w)
 	
 	end
 end
@@ -46,13 +48,14 @@ function Camera:render()
 end
 
 function Camera:renderView()
-	local dx, dy = self.x, self.y
+	local myRoom = self.room
+	local dx, dy = self.x - myRoom.x, self.y - myRoom.y
 
 	for _, room in pairs(world.rooms) do
-		room:renderBg(room.x + dx, room.y + dy)
+		room:renderBg(dx - room.x, dy - room.y)
 	end
 	for _, room in pairs(world.rooms) do
-		room:renderSprites(room.x + dx, room.y + dy)
+		room:renderSprites(dx - room.x, dy - room.y)
 	end
 end
 

@@ -28,7 +28,9 @@ function Bee:brain()
         local diffx = self.x - hx
         local diffy = self.y - hy
         local magnitude = ( (diffx^2) +(diffy^2))^0.5 
-
+	
+	if magnitude <= 0.001 then magnitude = 0.001 end
+	
         local velx = diffx * speed / magnitude
         local vely = diffy * speed / magnitude
 
