@@ -13,6 +13,8 @@ local _ENV = {}
 
 GreenTiles = SpriteSheet("gl/tilesetStrip.png", 1, 20)
 
+PauseScreen = SpriteSheet("gl/Pause.png", 1, 1)
+
 ------------------------------------------------------------------ Bestiary?
 
 Hero = require "Hero"

@@ -46,6 +46,8 @@ if args.testSprite then
 	room:add(content[args.testSprite](SCREEN_WIDTH - 4,5))
 end
 
+
+
 paused = false
 lost = false
 
@@ -62,12 +64,13 @@ function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 			world.hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 
 			tick(time)
-		else
-			--something
 		end
 		
 		render()
 		
+		if paused then
+			content.PauseScreen:fullscreen()
+		end
 	end)
 end
 
