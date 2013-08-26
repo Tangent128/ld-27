@@ -150,7 +150,6 @@ int main(int argc, char** argv) {
 		input();
 		
 		// Step 2 & 3: "Physics" & Rendering (Lua-driven)
-	beginSprites(0,0);
 		
 		lua_pushvalue(L, -1); // gameLoop function
 		lua_pushinteger(L, time);
@@ -169,8 +168,6 @@ int main(int argc, char** argv) {
 			printf("Error: %s\n", errorMessage);
 			exit(1);
 		}
-		
-	endSprites();
 		
 		// Step 3.9: Flip rendered image to screen
 		SDL_GL_SwapBuffers();

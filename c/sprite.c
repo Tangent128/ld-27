@@ -208,7 +208,11 @@ static void spriteInit() {
 }
 
 // public call to prepare drawing sprites
-void beginSprites(float cameraX, float cameraY) {
+int beginSprites(lua_State *L) {
+
+	float cameraX = luaL_checknumber(L, 1);
+	float cameraY = luaL_checknumber(L, 2);
+
 	glUseProgram(spriteProgram);
 
 	// setup sprite geometry
@@ -224,6 +228,8 @@ void beginSprites(float cameraX, float cameraY) {
 	
 	// locate camera
 	glUniform2f(spriteCamera, cameraX, cameraY);
+	
+	return 0;
 }
 
 // public call to draw a sprite
@@ -243,6 +249,7 @@ int drawSprite(lua_State *L) {
 		frames = -frames;
 	}
 
+	// setup parameters
 	glUniform2f(spriteLocation, x, y);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -250,16 +257,14 @@ int drawSprite(lua_State *L) {
 	glUniform1f(spriteFrameNum, frame);
 	glUniform1f(spriteFrameCount, frames);
 	
-	
-	//printf("bind sprite %d\n", texture);
-//printf("%d %d %d %d %d %d\n", spriteCamera, spriteLocation, spriteCoords, spriteTexture, GL_TEXTURE0, texture);
-	
+	// draw!
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
 
 // public call cleaning up after drawing sprites
-void endSprites() {
+int endSprites(lua_State *L) {
 	glDisableVertexAttribArray(spriteCoords);
+	return 0;
 }
 
 // === backgrounds ===
@@ -295,7 +300,9 @@ void initGL() {
 
 static const luaL_Reg spriteFuncs[] = {
 	{ "makeTexture", &makeTexture },
+	{ "beginSprites", &beginSprites },
 	{ "drawSprite", &drawSprite },
+	{ "endSprites", &endSprites },
 	
 	{ NULL, NULL }
 };
