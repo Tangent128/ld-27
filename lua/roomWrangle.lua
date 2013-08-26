@@ -19,25 +19,22 @@ end
 
 function Camera:brain()
 	
-	self.y = 5
-	self.x = 10
-	self.vx = -0.1
+--	self.y = 5
+--	self.x = 10
+--	self.vx = -0.1
+	local cw = self.w / 2
+	local ch = self.h / 2
 
 	while self:yield() do
 	
 		local hx, hy = self:locateHero()
-	
-		while true do
-			repeat 
-				self:yield()
-				self:gravityPhysics(true)
-			until self.onGround
-			repeat
-				self:yield()
-				self.vy = 0.2
-				self:floatPhysics(true)
-			until self.hitCeiling
-		end
+		
+		local dx = hx - self.x - cw
+		local dy = hy - self.y - ch
+
+		-- springy cam, average offsets into it instead of setting
+		self.vx = (self.vx*3 + dx) / 4
+		self.vy = (self.vy*3 + dy) / 4
 		
 		self:gravityPhysics(true) -- only check against world bounds
 		--print(self.x, self.y, self.vx, self.vy)

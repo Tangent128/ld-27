@@ -32,7 +32,7 @@ roomWrangle = require "roomWrangle"
 world.hero = content.Hero(3,3)
 world.camera = roomWrangle.Camera()
 
-room = roomGen.makeDebugRoom(SCREEN_WIDTH * 2, SCREEN_HEIGHT + 5)
+room = roomGen.makeDebugRoom(SCREEN_WIDTH +3, SCREEN_HEIGHT + 5)
 room:add(world.hero)
 room:add(world.camera)
 
