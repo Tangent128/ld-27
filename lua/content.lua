@@ -12,6 +12,7 @@ local _ENV = {}
 -------------------------------------------------------------- SpriteSheets
 
 GreenTiles = SpriteSheet("gl/tilesetStrip.png", 1, 20)
+ClockTiles = SpriteSheet("gl/clockDigits.png", 3, 11)
 
 PauseScreen = SpriteSheet("gl/Pause.png", 1, 1)
 

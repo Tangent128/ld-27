@@ -129,6 +129,8 @@ function render(mx, my)
 	
 	world.camera:renderView()
 	
+	renderClock()
+	
 	-- overlays
 	if paused then
 		
@@ -143,6 +145,27 @@ function render(mx, my)
 		-- cursor?
 		--content.???:draw(mx, my)
 	end
+end
+
+local digits = content.ClockTiles
+local cx = SCREEN_WIDTH/2 - 1.5
+local cy = SCREEN_HEIGHT - 3
+function renderClock()
+	local t = math.floor(world.timer / 1000)
+	t = math.min(t, 99)
+	
+	local ones = t % 10
+	local tens = (t - ones) / 10
+
+	-- account for tile orders
+	if ones == 0 then ones = 10 end
+	if tens == 0 then tens = 10 end
+	
+	g.beginSprites(0,0)
+		digits:draw(cx,cy,11)
+		digits:draw(cx-1,cy,tens)
+		digits:draw(cx+1,cy,ones)
+	g.endSprites()	
 end
 
 end, ...)
