@@ -2,6 +2,9 @@
 local setmetatable, pairs, print = setmetatable, pairs, print
 local abs, floor, ceil, min, max = math.abs, math.floor, math.ceil, math.min, math.max
 local coroutine = coroutine
+
+local beginSprites, endSprites = g.beginSprites, g.endSprites
+
 local Class = require "object".Class
 local _ENV = {}
 
@@ -253,7 +256,8 @@ function Room:tick(timeDiff)
 	
 end
 
-function Room:render()
+function Room:renderOffset(x,y)
+	beginSprites(0,0)
 	
 	for x = 0, self.w-1 do
 		for y = 0, self.h-1 do
@@ -268,6 +272,10 @@ function Room:render()
 		sprite:render()
 	end
 	
+	endSprites()
+end
+function Room:render()
+	self:renderOffset(0,0)
 end
 
 return _ENV
