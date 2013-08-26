@@ -85,7 +85,7 @@ function Sprite:normalizeSpeed(speed)
 end
 
 -- iterator for all the sprites in the room
-function Sprite:getAllSprites()
+function Sprite:loopAllSprites()
 	return coroutine.wrap(function()
 		for _, room in pairs(world.rooms) do
 			for sprite in pairs(room.sprites) do

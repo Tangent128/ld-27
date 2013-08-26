@@ -17,6 +17,15 @@ function Projectile:brain()
             self:die()
         end
 
+	for obj in self:loopAllSprites()
+		if self:intersect(obj) then
+			impact = true
+			
+			-- objects may define an optional :getShot(bullet) method
+			if obj.getShot then obj:getShot(self) end
+		end
+	end
+
         if self.collideSide or self.onGround or self.hitCeiling then
             --Set to impact frame
 			self.frame = 4 
