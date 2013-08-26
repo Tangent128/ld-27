@@ -16,6 +16,8 @@ end
 
 function Sheep:brain()
 	
+	self.h = 1
+	
 	local animate = self:wrapLoop(function()
 		self:waitFrames(10) -- yields 10 times then returns
 	
