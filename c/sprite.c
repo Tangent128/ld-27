@@ -289,13 +289,6 @@ void initGL() {
 	// sprites
 	spriteInit();
 	
-	// setup attributes
-	//printf("%d %d\n", position, color);
-
-	// ready
-	
-	
-	
 }
 
 static const luaL_Reg spriteFuncs[] = {

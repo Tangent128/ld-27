@@ -55,6 +55,20 @@ function Sprite:render()
 	self.sheet:draw(self.x, self.y, self.frame, self.flip)
 end
 
+function Sprite:locateHero()
+	local myRoom = self.room
+	local hero = myRoom.hero
+	local heroRoom = hero.room
+	
+	if hero then
+		local x = hero.x + heroRoom.x - myRoom.x
+		local y = hero.y + heroRoom.y - myRoom.y
+		return x, y
+	else
+		return self.x, self.y
+	end
+end
+
 ------------------------------------------------------------ Sprite Physics
 
 function Sprite:gravityPhysics()
@@ -223,6 +237,10 @@ function Room:init(w, h, sheet)
 	
 	self.grid = {}
 	self.sprites = {}
+	
+	self.x = 0
+	self.y = 0
+	self.oldRoom = false
 end
 
 function Room:add(obj)
@@ -275,7 +293,7 @@ function Room:renderOffset(x,y)
 	endSprites()
 end
 function Room:render()
-	self:renderOffset(0,0)
+	self:renderOffset(self.x,self.y)
 end
 
 return _ENV
