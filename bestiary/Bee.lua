@@ -55,7 +55,7 @@ function Bee:brain()
 
         self.vy = vertBump and vely or -vely + 0.1
 
-        print (velx, vely)
+        --print (velx, vely)
 
         --print (hx, hy, diffx, diffy)
 
