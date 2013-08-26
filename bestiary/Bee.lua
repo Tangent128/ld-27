@@ -42,11 +42,11 @@ function Bee:brain()
 		end
 
         if (diffx < 0 and self.flip == false) then
-            self.flip = not self.flip
+            self.flip = true
         end
         
         if (diffx > 0 and self.flip == true) then
-            self.flip = not self.flip
+            self.flip = false
         end
 
         if self.onGround or self.hitCeiling then
