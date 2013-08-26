@@ -74,6 +74,16 @@ function Sprite:locateHero()
 	end
 end
 
+function Sprite:normalizeSpeed(speed)
+	local magnitude = ( (self.vx^2) +(self.vy^2))^0.5 
+
+	-- handle zero/near-zero vectors
+	if magnitude <= 0.001 then magnitude = 0.001 end
+
+	self.vx = self.vx * speed / magnitude
+	self.vy = self.vy * speed / magnitude
+end
+
 function Sprite:intersect(other)
 
 	if self.room ~= other.room then return false end

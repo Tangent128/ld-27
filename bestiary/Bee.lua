@@ -25,29 +25,23 @@ function Bee:brain()
 
         local hx, hy = self:locateHero()
 		
-        local diffx = self.x - hx
-        local diffy = self.y - hy
-        local magnitude = ( (diffx^2) +(diffy^2))^0.5 
+        self.vx = hx - self.x
+        self.vy = hy - self.y
+        
+        local magnitude = ( (self.vx^2) +(self.vy^2))^0.5 
 	
 	if magnitude <= 0.001 then magnitude = 0.001 end
 	
-        local velx = diffx * speed / magnitude
-        local vely = diffy * speed / magnitude
-
-		self.vx = -velx 
+        self.vx = self.vx * speed / magnitude
+        self.vy = self.vy * speed / magnitude
 		
-		self:floatPhysics()
-		
-		if self.collideSide then
-			self.flip = not self.flip
-            self.vx = velx
-		end
+	self:floatPhysics()
 
-        if (diffx < 0 and self.flip == false) then
+        if (self.vx > 0) then
             self.flip = true
         end
         
-        if (diffx > 0 and self.flip == true) then
+        if (self.vx < 0) then
             self.flip = false
         end
 
@@ -55,7 +49,10 @@ function Bee:brain()
 			vertBump = true
 		end
 
-        self.vy = vertBump and vely or -vely + 0.1
+		if vertBump then
+			self.vy = -self.vy
+		end
+		--= vertBump and vely or -vely + 0.1
 
         --print (velx, vely)
 
