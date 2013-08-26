@@ -7,6 +7,8 @@ local Projectile = require "Projectile"
 local AnvilSheet = sprite.SpriteSheet("bestiary/FlyingAnvilSheet.png", 2,2);
 local Anvil = world.Sprite(0,0, 1, AnvilSheet)
 
+local args = args
+
 function Anvil:brain()
 	
 	local falling = true
@@ -49,11 +51,16 @@ function Anvil:brain()
 
 	while self:yield() do
 		animate()
-		gun()
+		if args.anvilGun then
+			gun()
+		end
 		  
 		if falling then
 			self:gravityPhysics()
 			
+			if self:intersect(world.hero) then
+				if world.hero.getHit then world.hero:getHit(-3.0, 1.0) end
+			end
 			
 		else
 			self.vy = 0.2

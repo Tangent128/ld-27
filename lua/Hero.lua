@@ -43,14 +43,18 @@ function Hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	
 end
 
+function Hero:getHit(vx, vy)
+	-- fling upward
+	self.onGround = false
+
+	self.vx = math.min(vx, 0) -- fling backwards, but never forwards
+	self.vy = math.abs(vx) -- fling w/ bullet's horizontal force
+end
+
 function Hero:getShot(bullet)
 	if bullet.hostile then
 		
-		-- fling upward
-		self.onGround = false
-		
-		self.vx = math.min(bullet.vx, 0) -- fling backwards, but never forwards
-		self.vy = math.abs(bullet.vx) -- fling w/ bullet's horizontal force
+		self:getHit(bullet.vx, bullet.vy)
 		
 	end
 end

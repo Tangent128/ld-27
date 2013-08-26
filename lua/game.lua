@@ -23,8 +23,9 @@ verboseFailure(function(...)
 package.path = "lua/?.lua"
 
 args = require "flags" {...} {
-	debugRoom = {},
+	anvilGun = {},
 	testSprite = {arg = true},
+	time = {arg = true},
 }
 
 world = require "world"
@@ -48,6 +49,11 @@ local function initWorld(...)
 
 	if args.testSprite then
 		room:add(content[args.testSprite](SCREEN_WIDTH - 5,5))
+		world.timer = 10000
+	end
+	
+	if args.time then
+		world.timer = tonumber(args.time)
 	end
 
 	paused = true
@@ -69,7 +75,8 @@ function gameCycle(time, mX, mY, mLeft, kU, kD, kL, kR, kSpace, kEscape)
 			paused = true
 		end
 
-		if mLeft then
+		if kSpace then
+			-- only run on up->down transition, not every cycle space is down
 			if not clicked then
 				paused = false
 				title = false

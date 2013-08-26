@@ -35,7 +35,7 @@ function Sheep:brain()
 		end
 		
 		if self:intersect(world.hero) then
-			print "BAAAAA!"
+			--print "BAAAAA!"
 			if world.hero.getShot then world.hero:getShot(self) end
 		end
 		
