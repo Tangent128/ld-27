@@ -60,5 +60,16 @@ function makeDebugRoom(w, h)
 	return room
 end
 
+function makeDebugRoom2(w, h)
+	local room = Room(w,h, content.GreenTiles)
+	
+	room:add(content.Bee(3,3))
+	
+	block(room, 0,0, w,h, world.M)
+	ink(room, 0,1, w,1, world.STONE)
+
+	return room
+end
+
 return _ENV
 

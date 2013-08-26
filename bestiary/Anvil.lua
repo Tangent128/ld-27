@@ -2,8 +2,10 @@
 local sprite = require "sprite"
 local world = require "world"
 
-AnvilSheet = sprite.SpriteSheet("bestiary/FlyingAnvilSheet.png", 2,2);
-Anvil = world.Sprite(0,0, 1, AnvilSheet)
+local Sheep = require "Sheep"
+
+local AnvilSheet = sprite.SpriteSheet("bestiary/FlyingAnvilSheet.png", 2,2);
+local Anvil = world.Sprite(0,0, 1, AnvilSheet)
 
 function Anvil:brain()
 	
@@ -17,7 +19,15 @@ function Anvil:brain()
 			self.frame = 1
 		end
 	end)
-	
+	local sheepGun = self:wrapLoop(function()
+		self:waitFrames(60) -- wait ~2 seconds
+
+		local sheep = Sheep(0,0)
+		sheep.vx = -1.0
+		sheep.vy = 2.5
+		self:spawn(-1,0, sheep)
+	end)
+		
 	local speed = 0.1875
 
     --[[while true do
@@ -35,6 +45,7 @@ function Anvil:brain()
 	while self:yield() do
 		
 		animate()
+		sheepGun()
 		  
 		if falling then
 			self:gravityPhysics()

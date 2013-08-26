@@ -19,7 +19,7 @@ Hero = require "Hero"
 
 -- load from bestiary folder
 local lpath = package.path
-package.path = "bestiary/?.lua"
+package.path = "bestiary/?.lua;lua/?.lua"
 
 Sheep = require "Sheep"
 Anvil = require "Anvil"

@@ -73,6 +73,16 @@ function Sprite:locateHero()
 	end
 end
 
+function Sprite:spawn(dx, dy, obj)
+	obj.x = self.x + dx
+	obj.y = self.y + dy
+	self.room:add(obj)
+end
+
+function Sprite:die()
+	self.room:remove(self)
+end
+
 ------------------------------------------------------------ Sprite Physics
 
 function Sprite:gravityPhysics(boundsOnly)
@@ -226,6 +236,7 @@ BLANK = tile(6, false)
 PLAT_LEFT = tile(7)
 PLAT_RIGHT = tile(8)
 PLAT = tile(9)
+M = tile(10, false)
 STONE_LEFT = tile(11)
 STONE = tile(12)
 FLAT_STONE = tile(13)
