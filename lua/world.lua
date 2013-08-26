@@ -112,7 +112,7 @@ function Sprite:physicsStep(fraction, boundsOnly)
 	-- on corners
 	-- fraction: splits velocity into multiple iterations for fast objects
 	-- boundsOnly: don't test againt grid tiles, just roomBounds
-	local room = self.room
+	local myRoom = self.room
 	local w,h = self.w, self.h
 	
 	local lastX = self.x
@@ -128,14 +128,29 @@ function Sprite:physicsStep(fraction, boundsOnly)
 	local gy = floor(y)
 	
 	-- check potential collisions (if any cell borders were crossed)
-	local function collideWorldCheck(room, gx, gy)
+	local function collideWorldCheck(_, gx, gy)
+		local inBounds = false
+		local inRoom
+		for _, room in pairs(rooms) do
 
-		if gx < 0 or gx >= room.w then return true end
-		if gy < 0 or gy >= room.h then return true end
+			local lgx = gx + myRoom.x - room.x
+			local lgy = gy + myRoom.y - room.y
+--if(d) then print(gx,gy,room, room.x) end
 
-		if boundsOnly then return false end
+			if lgx >= 0 and lgx < room.w
+			and lgy >= 0 and lgy < room.h then
+				inBounds = true
+				inRoom = room
+				break
+			end
+		end
 
-		local tile = room:getGrid(gx, gy)
+		
+		if boundsOnly or not inBounds then
+			return not inBounds
+		end
+
+		local tile = inRoom:getGrid(gx, gy)
 		return tile.solid
 	end
 

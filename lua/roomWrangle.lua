@@ -35,8 +35,10 @@ function Camera:brain()
 		-- springy cam, average offsets into it instead of setting
 		self.vx = (self.vx*3 + dx) / 4
 		self.vy = (self.vy*3 + dy) / 4
-		
+
+world.d = true
 		self:gravityPhysics(true) -- only check against world bounds
+world.d = false
 		--print(self.x, self.y, self.vx, self.vy, self.w, self.room.w)
 	
 	end

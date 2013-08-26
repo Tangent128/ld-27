@@ -70,7 +70,8 @@ function makeDebugRoom2(w, h)
 	room:add(content.Bee(3,3))
 	
 	block(room, 0,0, w,h, world.M)
-	ink(room, 0,1, w,1, world.STONE)
+	ink(room, 0,1, w-1,1, world.STONE)
+	ink(room, 0,0, w-1,0, world.PLAT)
 
 	return room
 end
