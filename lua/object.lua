@@ -18,15 +18,15 @@ function instance(self, ...)
 	local object = setmetatable({}, self._meta)
 	object._meta = false
 	
-	-- only inherit consturctor if called with args
-	if select("#", ...) > 0 or rawget(self, "init") then
-		self.init(object, ...)
-	end
+	-- constuctor
+	self.init(object, ...)
 	
 	return object
 end
 
-Class = setmetatable({}, {
+Class = setmetatable({
+	init = function() end
+}, {
 	__call = instance
 })
 

@@ -26,24 +26,35 @@ args = require "flags" {...} {
 world = require "world"
 content = require "content"
 roomGen = require "roomGen"
+roomWrangle = require "roomWrangle"
 
-room = roomGen.makeDebugRoom(SCREEN_WIDTH, SCREEN_HEIGHT)
-hero = content.Hero(3,3)
-room:add(hero)
+-- init world
+world.hero = content.Hero(3,3)
+world.camera = roomWrangle.Camera()
+
+room = roomGen.makeDebugRoom(SCREEN_WIDTH * 2, SCREEN_HEIGHT + 5)
+room:add(world.hero)
+room:add(world.camera)
+
+world.rooms = {room}
 
 if args.testSprite then
 	room:add(content[args.testSprite](SCREEN_WIDTH - 4,5))
 end
 
+paused = false
+
 -- Lua side of game loop
 function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	verboseFailure(function() -- get useful error traceback
 		
-		hero.room.hero = hero
-		
-		hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
+		if not paused then
+			world.hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 
-		tick(time)
+			tick(time)
+		else
+			--something
+		end
 		
 		render()
 		
@@ -54,14 +65,19 @@ function tick(time)
 	-- frame length
 	local timeDiff = 30
 	
-	hero.room:tick(timeDiff)
+	for _, room in pairs(world.rooms) do
+		room:tick(timeDiff)
+	end
 end
 
 function render(mx, my)
-	hero.room:render()
+	
+	world.camera:renderView()
 	
 	-- cursor
+	if paused then
 	--content.???:draw(mx, my)
+	end
 end
 
 end, ...)

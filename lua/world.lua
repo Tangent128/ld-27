@@ -10,6 +10,11 @@ local _ENV = {}
 
 GRAVITY = -0.1
 
+-- global state
+hero = false
+camera = false
+rooms = {} -- list of currently valid rooms
+
 ------------------------------------------------------------ Sprite Objects
 
 Sprite = Class()
@@ -57,10 +62,9 @@ end
 
 function Sprite:locateHero()
 	local myRoom = self.room
-	local hero = myRoom.hero
-	local heroRoom = hero.room
 	
 	if hero then
+		local heroRoom = hero.room
 		local x = hero.x + heroRoom.x - myRoom.x
 		local y = hero.y + heroRoom.y - myRoom.y
 		return x, y
@@ -76,15 +80,7 @@ function Sprite:gravityPhysics()
 	self:floatPhysics()
 end
 
-local function collideWorldCheck(room, gx, gy)
-
-	if gx < 0 or gx >= room.w then return true end
-	if gy < 0 or gy >= room.h then return true end
-
-	local tile = room:getGrid(gx, gy)
-	return tile.solid
-end
-function Sprite:floatPhysics()
+function Sprite:floatPhysics(boundsOnly)
 	-- calculate number of physics steps needed
 	local xGridSpeed = ceil(abs(self.vx))
 	local yGridSpeed = ceil(abs(self.vy))
@@ -97,13 +93,15 @@ function Sprite:floatPhysics()
 	
 	-- run physics
 	for i = 1,segments do
-		self:physicsStep(segments)
+		self:physicsStep(segments, boundsOnly)
 	end
 end
-function Sprite:physicsStep(fraction)
+function Sprite:physicsStep(fraction, boundsOnly)
 	-- moves sprite & checks for world collisions,
 	-- resetting location if so; collision is based
-	-- on corners. fraction allows multiple passes for fast objects
+	-- on corners
+	-- fraction: splits velocity into multiple iterations for fast objects
+	-- boundsOnly: don't test againt grid tiles, just roomBounds
 	local room = self.room
 	local w,h = self.w, self.h
 	
@@ -120,6 +118,16 @@ function Sprite:physicsStep(fraction)
 	local gy = floor(y)
 	
 	-- check potential collisions (if any cell borders were crossed)
+	local function collideWorldCheck(room, gx, gy)
+
+		if gx < 0 or gx >= room.w then return true end
+		if gy < 0 or gy >= room.h then return true end
+
+		if boundsOnly then return false end
+
+		local tile = room:getGrid(gx, gy)
+		return tile.solid
+	end
 
 	-- falling
 	if gy < gLastY then
@@ -240,16 +248,23 @@ function Room:init(w, h, sheet)
 	
 	self.x = 0
 	self.y = 0
-	self.oldRoom = false
 end
 
 function Room:add(obj)
 
-	if obj.room then
-		obj.room:remove(obj)
+	-- coordinate offsets
+	local dx, dy = 0,0
+	
+	local oldRoom = obj.room
+	if oldRoom then
+		dx = oldRoom.x - self.x
+		dy = oldRoom.y - self.y
+		oldRoom:remove(obj)
 	end
 	
 	obj.room = self
+	obj.x = obj.x + dx
+	obj.y = obj.y + dy
 	
 	self.sprites[obj] = obj
 end
@@ -274,9 +289,9 @@ function Room:tick(timeDiff)
 	
 end
 
-function Room:renderOffset(x,y)
-	beginSprites(0,0)
-	
+function Room:renderBg(x,y)
+	beginSprites(x,y)
+
 	for x = 0, self.w-1 do
 		for y = 0, self.h-1 do
 			local tile = self:getGrid(x,y)
@@ -286,6 +301,11 @@ function Room:renderOffset(x,y)
 		end
 	end
 	
+	endSprites()
+end
+function Room:renderSprites(x,y)
+	beginSprites(x,y)
+	
 	for sprite in pairs(self.sprites) do
 		sprite:render()
 	end
@@ -293,7 +313,7 @@ function Room:renderOffset(x,y)
 	endSprites()
 end
 function Room:render()
-	self:renderOffset(self.x,self.y)
+
 end
 
 return _ENV
