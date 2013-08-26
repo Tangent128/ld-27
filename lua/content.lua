@@ -17,6 +17,8 @@ PauseScreen = SpriteSheet("gl/Pause.png", 1, 1)
 
 StartScreen = SpriteSheet("gl/WIPTitle4.png", 1, 1)
 
+GameOver = SpriteSheet("gl/WIPGameOver3.png", 1, 1)
+
 ------------------------------------------------------------------ Bestiary?
 
 Hero = require "Hero"

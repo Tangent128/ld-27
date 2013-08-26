@@ -31,42 +31,52 @@ roomGen = require "roomGen"
 roomWrangle = require "roomWrangle"
 
 -- init world
-world.hero = content.Hero(3,3)
-world.camera = roomWrangle.Camera()
 
-room = roomGen.makeDebugRoom(SCREEN_WIDTH+1, SCREEN_HEIGHT + 10)
-room2 = roomGen.makeDebugRoom2(SCREEN_WIDTH+1, SCREEN_HEIGHT + 5)
-room2.x = SCREEN_WIDTH+1
-room:add(world.hero)
-room:add(world.camera)
+local function initWorld(...)
 
-world.rooms = {room}
+    world.hero = content.Hero(3,3)
+    world.camera = roomWrangle.Camera()
 
-if args.testSprite then
-	room:add(content[args.testSprite](SCREEN_WIDTH - 5,5))
+    room = roomGen.makeDebugRoom(SCREEN_WIDTH+1, SCREEN_HEIGHT + 10)
+    room2 = roomGen.makeDebugRoom2(SCREEN_WIDTH+1, SCREEN_HEIGHT + 5)
+    room2.x = SCREEN_WIDTH+1
+    room:add(world.hero)
+    room:add(world.camera)
+
+    world.rooms = {room}
+
+    if args.testSprite then
+        room:add(content[args.testSprite](SCREEN_WIDTH - 5,5))
+    end
+    
+    paused = false
+    lost = false
+    newrun = true
+    reinit = false
+    world.timer = 10000
+
 end
 
-
-
-paused = false
-lost = false
-newrun = true
+initWorld()
 
 -- Lua side of game loop
 function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	verboseFailure(function() -- get useful error traceback
 
+        if world.timer <= 0 then
+            lost = true
+        end
 
-        if kEscape then
+        if kEscape and not lost then
             paused = true
         end
-        
-        if kSpace then
+
+        if kSpace and not lost then
             paused = false
             newrun = false
         end
 
-		if not paused and not newrun --[[and not lost]] then
+		if not paused and not newrun and not lost then
 			world.timer = world.timer - 30
 			if world.timer <= 0 then
 				lost = true
@@ -79,12 +89,29 @@ function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 		
 		render()
 		
-		if paused and not newrun then
+		if paused and not newrun and not lost then
 			content.PauseScreen:fullscreen()
 		end
         
-        if newrun then
+        if newrun and not lost then
             content.StartScreen:fullscreen()
+        end
+        
+        if lost and not newrun and not kSpace then
+            content.GameOver:fullscreen()
+        end
+        
+        if lost and newrun then
+            content.StartScreen:fullscreen()
+            reinit = true
+        end
+
+        if lost and not newrun and kSpace then
+            newrun = true
+        end
+
+        if reinit and kSpace then
+            initWorld()
         end
 
 	end)
