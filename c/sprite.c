@@ -245,7 +245,7 @@ int drawSprite(lua_State *L) {
 	int flip = lua_toboolean(L, 8);
 
 	if(flip) {
-		frame += frames;
+		frame = -1 - frame;
 		frames = -frames;
 	}
 
