@@ -21,7 +21,7 @@ function Sheep:brain()
 	while self:yield() do
 		animate()
 		
-		speed = speed + 0.01
+		speed = math.min(speed + 0.02, 2.0)
 		
 		self.vx = self.flip and speed or -speed
 		
@@ -29,6 +29,7 @@ function Sheep:brain()
 		
 		if self.collideSide then
 			self.flip = not self.flip
+			speed = 0.1875
 		end
 		
 	end

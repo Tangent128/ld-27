@@ -149,7 +149,7 @@ function Sprite:physicsStep(fraction, boundsOnly)
 			--hit ceiling
 			self.hitCeiling = true
 			--bump down to edge of surface
-			y = gLastY
+			y = gLastY + 0.999
 			gy = gLastY
 			self.vy = 0
 		end
@@ -175,7 +175,7 @@ function Sprite:physicsStep(fraction, boundsOnly)
 			--hit wall
 			self.collideSide = true
 			--bump over to edge of surface
-			x = gLastX
+			x = gLastX + 0.999
 			gx = gLastX
 			self.vx = 0
 		end
