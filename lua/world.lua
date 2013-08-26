@@ -15,6 +15,7 @@ hero = false
 camera = false
 timer = 10000
 rooms = {} -- list of currently valid rooms
+poof = false -- object to use for explosions
 
 ------------------------------------------------------------ Sprite Objects
 
@@ -119,6 +120,11 @@ function Sprite:spawn(dx, dy, obj)
 	obj.x = self.x + dx
 	obj.y = self.y + dy
 	self.room:add(obj)
+end
+
+function Sprite:explode()
+	if poof then self:spawn(0,0, poof(0,0)) end
+	self:die()
 end
 
 function Sprite:die()

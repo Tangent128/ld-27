@@ -7,6 +7,13 @@ local Sheep = world.Sprite(0,0, 1, SheepSheet)
 
 Sheep.hostile = true
 
+function Sheep:getShot(bullet)
+	if not bullet.hostile then
+		--and bullet.y < self.y + 1
+		self:explode()
+	end
+end
+
 function Sheep:brain()
 	
 	local animate = self:wrapLoop(function()

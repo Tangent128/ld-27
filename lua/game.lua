@@ -35,6 +35,8 @@ roomWrangle = require "roomWrangle"
 
 -- init world
 
+world.poof = content.Puffball
+
 local function initWorld(...)
 
 	world.hero = content.Hero(3,3)

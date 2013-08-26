@@ -71,7 +71,6 @@ function Hero:brain()
 		boolet.vy = 0
 		boolet.frame = 1
 		boolet.owner = self
-		boolet.hostile = true
 		
 		self:spawn(1,0, boolet)
 		
