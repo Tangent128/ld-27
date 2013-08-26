@@ -24,6 +24,7 @@ package.path = "bestiary/?.lua;lua/?.lua"
 Sheep = require "Sheep"
 Anvil = require "Anvil"
 Bee = require "Bee"
+Projectile = require "Projectile"
 
 package.path = lpath
 
