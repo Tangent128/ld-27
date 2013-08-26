@@ -28,15 +28,15 @@ function Bee:brain()
         self.vx = hx - self.x
         self.vy = hy - self.y
 
-	self:normalizeSpeed(speed)        
+	self:normalizeSpeed(speed, 0)
 		
 	self:floatPhysics()
 
-        if (self.vx > 0) then
+        if (self.vx > 0.1) then
             self.flip = true
         end
         
-        if (self.vx < 0) then
+        if (self.vx < -0.1) then
             self.flip = false
         end
 

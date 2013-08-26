@@ -76,14 +76,18 @@ function Sprite:locateHero()
 	end
 end
 
-function Sprite:normalizeSpeed(speed)
+function Sprite:normalizeSpeed(maxSpeed, minSpeed)
+	minSpeed = minSpeed or maxSpeed
 	local magnitude = ( (self.vx^2) +(self.vy^2))^0.5 
 
 	-- handle zero/near-zero vectors
 	if magnitude <= 0.001 then magnitude = 0.001 end
 
-	self.vx = self.vx * speed / magnitude
-	self.vy = self.vy * speed / magnitude
+	-- accept slower speeds without modification
+	if magnitude < minSpeed then magnitude = maxSpeed end
+
+	self.vx = self.vx * maxSpeed / magnitude
+	self.vy = self.vy * maxSpeed / magnitude
 end
 
 -- iterator for all the sprites in the room

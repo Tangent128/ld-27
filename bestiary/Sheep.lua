@@ -5,6 +5,8 @@ local world = require "world"
 local SheepSheet = sprite.SpriteSheet("bestiary/SheepSheet.png", 2,3);
 local Sheep = world.Sprite(0,0, 1, SheepSheet)
 
+Sheep.hostile = true
+
 function Sheep:brain()
 	
 	local animate = self:wrapLoop(function()
@@ -34,6 +36,7 @@ function Sheep:brain()
 		
 		if self:intersect(world.hero) then
 			print "BAAAAA!"
+			if world.hero.getShot then world.hero:getShot(self) end
 		end
 		
 	end

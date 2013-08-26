@@ -53,6 +53,8 @@ function Anvil:brain()
 		  
 		if falling then
 			self:gravityPhysics()
+			
+			
 		else
 			self.vy = 0.2
 			self:floatPhysics()
