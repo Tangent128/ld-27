@@ -46,13 +46,14 @@ function Camera:render()
 end
 
 function Camera:renderView()
-	local dx, dy = self.x, self.y
+	local myRoom = self.room
+	local dx, dy = self.x - myRoom.x, self.y - myRoom.y
 
 	for _, room in pairs(world.rooms) do
-		room:renderBg(room.x + dx, room.y + dy)
+		room:renderBg(dx - room.x, dy - room.y)
 	end
 	for _, room in pairs(world.rooms) do
-		room:renderSprites(room.x + dx, room.y + dy)
+		room:renderSprites(dx - room.x, dy - room.y)
 	end
 end
 
