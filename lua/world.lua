@@ -129,29 +129,30 @@ function Sprite:physicsStep(fraction, boundsOnly)
 	
 	-- check potential collisions (if any cell borders were crossed)
 	local function collideWorldCheck(_, gx, gy)
-		local inBounds = false
 		local inRoom
 		for _, room in pairs(rooms) do
 
+			-- convert to room coords
 			local lgx = gx + myRoom.x - room.x
 			local lgy = gy + myRoom.y - room.y
---if(d) then print(gx,gy,room, room.x) end
 
+			-- test if point inside a given room
 			if lgx >= 0 and lgx < room.w
 			and lgy >= 0 and lgy < room.h then
-				inBounds = true
-				inRoom = room
-				break
+			
+				if boundsOnly then return false end
+				
+				-- test against room's tiles
+				
+				local tile = room:getGrid(lgx, lgy)
+				if tile == nil then print(lgx, lgy, gy) end
+				return tile.solid
 			end
 		end
 
-		
-		if boundsOnly or not inBounds then
-			return not inBounds
-		end
+		-- outside all rooms
+		return true
 
-		local tile = inRoom:getGrid(gx, gy)
-		return tile.solid
 	end
 
 	-- falling

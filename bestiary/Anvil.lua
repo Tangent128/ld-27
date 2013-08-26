@@ -20,7 +20,7 @@ function Anvil:brain()
 		end
 	end)
 	local gun = self:wrapLoop(function()
-		self:waitFrames(60) -- wait ~2 seconds
+		self:waitFrames(20) -- wait ~2/3 seconds
 
 		local boolet = Projectile(0,0)
 		boolet.vx = -1.0
@@ -45,7 +45,6 @@ function Anvil:brain()
     end]]
 
 	while self:yield() do
-		
 		animate()
 		gun()
 		  
