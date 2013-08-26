@@ -14,8 +14,9 @@ int debugEnabled = 1;
 // "world" data ===================
 
 // mouse location
-static float mx;
-static float my;
+static float mX;
+static float mY;
+static Uint8 mLeft;
 
 // keys
 static Uint8 kU = 0;
@@ -116,13 +117,17 @@ static void input() {
 				}
 				break;
 			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
 				//SDL_WM_GrabInput(SDL_GRAB_ON);
+				if(evt.button.button = SDL_BUTTON_LEFT) {
+					mLeft = evt.button.state;
+				}
 				break;
 			case SDL_MOUSEMOTION:
 				// record the mouse location
 				// and translate to game coordinates
-				mx = evt.motion.x / 32.0;
-				my = (480 - evt.motion.y) / 32.0;
+				mX = evt.motion.x / 32.0;
+				mY = (480 - evt.motion.y) / 32.0;
 				break;
 			//default: printf("Event type %d\n", evt.type);
 		}
@@ -153,8 +158,9 @@ int main(int argc, char** argv) {
 		
 		lua_pushvalue(L, -1); // gameLoop function
 		lua_pushinteger(L, time);
-		lua_pushnumber(L, mx);
-		lua_pushnumber(L, my);
+		lua_pushnumber(L, mX);
+		lua_pushnumber(L, mY);
+		lua_pushboolean(L, mLeft == SDL_PRESSED);
 		lua_pushboolean(L, kU == SDL_PRESSED);
 		lua_pushboolean(L, kD == SDL_PRESSED);
 		lua_pushboolean(L, kL == SDL_PRESSED);
@@ -162,7 +168,7 @@ int main(int argc, char** argv) {
 		lua_pushboolean(L, kSpace == SDL_PRESSED);
 		lua_pushboolean(L, kEscape == SDL_PRESSED);
 		
-		int status = lua_pcall(L, 9, 0, 0);
+		int status = lua_pcall(L, 10, 0, 0);
 		if(status != LUA_OK) {
 			const char* errorMessage = lua_tostring(L, -1);
 			printf("Error: %s\n", errorMessage);

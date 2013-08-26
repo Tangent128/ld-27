@@ -60,7 +60,7 @@ end
 initWorld()
 
 -- Lua side of game loop
-function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
+function gameCycle(time, mX, mY, mLeft, kU, kD, kL, kR, kSpace, kEscape)
 	verboseFailure(function() -- get useful error traceback
 
         if world.timer <= 0 then
@@ -71,7 +71,7 @@ function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
             paused = true
         end
 
-        if kSpace and not lost then
+        if mLeft and not lost then
             paused = false
             newrun = false
         end
@@ -82,7 +82,7 @@ function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 				lost = true
 			end
 		
-			world.hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
+			world.hero:input(mX, mY, kU, kD, kL, kR, kSpace, kEscape)
 
 			tick(time)
 		end
