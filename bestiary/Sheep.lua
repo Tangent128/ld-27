@@ -16,6 +16,7 @@ end
 
 function Sheep:brain()
 	
+	-- hack to make bounds better fit sprite
 	self.h = 1
 	
 	local animate = self:wrapLoop(function()
