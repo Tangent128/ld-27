@@ -31,6 +31,7 @@ Sheep = require "Sheep"
 Anvil = require "Anvil"
 Bee = require "Bee"
 Projectile = require "Projectile"
+Clock = require "Clock"
 
 package.path = lpath
 
