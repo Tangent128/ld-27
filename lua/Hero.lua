@@ -2,6 +2,8 @@
 local sprite = require "sprite"
 local world = require "world"
 
+local Projectile = require "Projectile"
+
 local HeroSheet = sprite.SpriteSheet("gl/ProtagSheet.png", 2,6);
 local Hero = world.Sprite(0,0, 1, HeroSheet)
 
@@ -9,6 +11,8 @@ function Hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	
 	local kx, ky = 0, 0
 	
+    self.wantToFire = False
+
 	if kU then ky = ky + 1 end
 	if kD then ky = ky - 1 end
 	
@@ -33,10 +37,26 @@ function Hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 			self.vx = newVx
 		end
 	end
+    
+    self.wantToFire = kSpace
+
 	
 end
 
 function Hero:brain()
+
+    local gun = self:wrapLoop(function()
+        repeat self:yield() until self.wantToFire
+            if self.wantToFire == true then
+                local boolet = Projectile(0,0)
+                boolet.vx = 1.0
+                boolet.vy = 0
+                boolet.frame = 1
+                boolet.hostile = true
+                self:spawn(1,0, boolet)
+                self:waitFrames(5)
+            end
+	end)
 	
 	local animate = self:wrapLoop(function()
 		self:waitFrames(10) -- yields 10 times then returns
@@ -51,7 +71,8 @@ function Hero:brain()
 	
 	while self:yield() do
 		animate()
-		
+        gun()
+
 		self:gravityPhysics()
 		
 	end
