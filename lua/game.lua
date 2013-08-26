@@ -38,7 +38,7 @@ local function initWorld(...)
 
 	world.hero = content.Hero(3,3)
 	world.camera = roomWrangle.Camera()
-	world.timer = 10000/5
+	world.timer = 10000
 
 	room = roomGen.makeDebugRoom(SCREEN_WIDTH+1, SCREEN_HEIGHT + 10)
 	room:add(world.hero)
