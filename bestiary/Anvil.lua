@@ -23,9 +23,12 @@ function Anvil:brain()
 		self:waitFrames(20) -- wait ~2/3 seconds
 
 		local boolet = Projectile(0,0)
-		boolet.vx = -1.0
-		boolet.vy = 0
+		local hx, hy = self:locateHero()
+		boolet.vx = hx - self.x
+		boolet.vy = hy - self.y
+		boolet:normalizeSpeed(1.0)
         boolet.frame = 2
+        boolet.owner = self
         boolet.hostile = true
 		self:spawn(-1,0, boolet)
 	end)

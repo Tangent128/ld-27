@@ -25,6 +25,7 @@ end
 
 function SpriteSheet:init(filename, scale, count)
 	self.texture = grabTexture(filename)
+	self.filename = filename
 	self.scale = scale or 1
 	self.count = count or 1
 end

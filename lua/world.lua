@@ -20,6 +20,8 @@ rooms = {} -- list of currently valid rooms
 
 Sprite = Class()
 
+Sprite.solid = true
+
 function Sprite:init(x, y, frame, sheet)
 	-- sheet can be inherited from prototype
 	self.sheet = sheet
@@ -87,9 +89,11 @@ end
 -- iterator for all the sprites in the room
 function Sprite:loopAllSprites()
 	return coroutine.wrap(function()
-		for _, room in pairs(world.rooms) do
+		for _, room in pairs(rooms) do
 			for sprite in pairs(room.sprites) do
-				coroutine.yield(sprite)
+				if sprite ~= self and sprite.solid then
+					coroutine.yield(sprite)
+				end
 			end
 		end
 	end)

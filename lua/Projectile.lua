@@ -4,6 +4,8 @@ local world = require "world"
 local ProjSheet = sprite.SpriteSheet("gl/Projectiles.png", 1,4);
 local Projectile = world.Sprite(0,0, 1, ProjSheet)
 
+Projectile.solid = false
+
 function Projectile:brain()
 
     local impact = false
@@ -17,12 +19,15 @@ function Projectile:brain()
             self:die()
         end
 
-	for obj in self:loopAllSprites()
+	for obj in self:loopAllSprites() do
 		if self:intersect(obj) then
-			impact = true
+			if obj ~= self.owner then
+				impact = true
+				print("hit", obj.sheet.filename)
 			
-			-- objects may define an optional :getShot(bullet) method
-			if obj.getShot then obj:getShot(self) end
+				-- objects may define an optional :getShot(bullet) method
+				if obj.getShot then obj:getShot(self) end
+			end
 		end
 	end
 

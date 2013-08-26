@@ -10,6 +10,8 @@ local _ENV = {}
 
 Camera = world.Sprite(0,0, 1, content.GreenTiles)
 
+Camera.solid = false
+
 -- override normal size with screen bounds
 function Camera:init(...)
 	world.Sprite.init(self, ...)

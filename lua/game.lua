@@ -43,7 +43,7 @@ room:add(world.camera)
 world.rooms = {room}
 
 if args.testSprite then
-	room:add(content[args.testSprite](SCREEN_WIDTH - 4,5))
+	room:add(content[args.testSprite](SCREEN_WIDTH - 5,5))
 end
 
 
