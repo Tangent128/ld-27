@@ -37,7 +37,7 @@ function Camera:brain()
 		self.vy = (self.vy*3 + dy) / 4
 		
 		self:gravityPhysics(true) -- only check against world bounds
-		--print(self.x, self.y, self.vx, self.vy)
+		--print(self.x, self.y, self.vx, self.vy, self.w, self.room.w)
 	
 	end
 end

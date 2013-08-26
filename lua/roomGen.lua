@@ -55,13 +55,11 @@ function makeDebugRoom(w, h)
 	for i = 0,w-1 do
 		room:setGrid(i,0, i%2 == 1 and world.SOLID or world.STONE)
 	end
-	--block(room, 8,0, 2,4, world.STONE)
+	block(room, 8,0, 2,4, world.STONE)
 	room:setGrid(w-3,2, world.LEDGE_LEFT)
 	room:setGrid(w-2,2, world.FLAT)
 	room:setGrid(w-1,2, world.LEDGE_RIGHT)
 	ink(room, w-3,1, w-1,1, world.SOLID)
-	
-	--for x = 1,room.
 	
 	return room
 end
