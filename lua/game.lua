@@ -55,6 +55,14 @@ lost = false
 function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	verboseFailure(function() -- get useful error traceback
 		
+        if kEscape and not paused then
+            paused = true
+        end
+        
+        if kSpace and paused then
+            paused = false
+        end
+
 		if not paused --[[and not lost]] then
 			world.timer = world.timer - 30
 			if world.timer <= 0 then
