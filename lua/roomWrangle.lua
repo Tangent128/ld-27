@@ -3,7 +3,6 @@ local pairs, print = pairs, print
 local content = require "content"
 local sprite = require "sprite"
 local world = require "world"
-local roomGen = require "roomGen"
 
 local SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_WIDTH, SCREEN_HEIGHT
 
@@ -38,9 +37,7 @@ function Camera:brain()
 		self.vx = (self.vx*3 + dx) / 4
 		self.vy = (self.vy*3 + dy) / 4
 
-world.d = true
 		self:gravityPhysics(true) -- only check against world bounds
-world.d = false
 		--print(self.x, self.y, self.vx, self.vy, self.w, self.room.w)
 	
 	end
@@ -51,7 +48,10 @@ end
 
 function Camera:renderView()
 	local myRoom = self.room
-	local dx, dy = self.x - myRoom.x, self.y - myRoom.y
+	--print(self.x, self.y)
+	
+	local dx, dy = self.x + myRoom.x, self.y + myRoom.y
+	--print(dx, dy)
 
 	for _, room in pairs(world.rooms) do
 		room:renderBg(dx - room.x, dy - room.y)
@@ -63,6 +63,29 @@ end
 
 FlagSheet = sprite.SpriteSheet("gl/flag.png", 3, 2)
 Flag = world.Sprite(0,0, 1, FlagSheet)
+
+function Flag:brain()
+
+	repeat self:yield() until self:intersect(world.hero)
+
+	-- add 10 seconds to clock
+	world.timer = world.timer + 10000
+	print("time", world.timer)
+
+	self.frame = 2
+	
+	local newRoom = self.nextRoom(world.timer / 1000)
+	newRoom.x = 0 --self.room.x + self.room.w
+	newRoom.y = 0 --self.y - 2
+	
+	self.room.x = -self.room.w
+	self.room.y = 0 -- -self.y + 2
+	
+	world.rooms = {self.room, newRoom}
+
+	while true do self:yield() end
+
+end
 
 return _ENV
 

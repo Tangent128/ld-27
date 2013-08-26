@@ -34,25 +34,31 @@ roomWrangle = require "roomWrangle"
 world.hero = content.Hero(3,3)
 world.camera = roomWrangle.Camera()
 
-room = roomGen.makeDebugRoom(SCREEN_WIDTH+1, SCREEN_HEIGHT + 5)
+room = roomGen.makeDebugRoom(SCREEN_WIDTH+1, SCREEN_HEIGHT + 10)
 room2 = roomGen.makeDebugRoom2(SCREEN_WIDTH+1, SCREEN_HEIGHT + 5)
 room2.x = SCREEN_WIDTH+1
 room:add(world.hero)
 room:add(world.camera)
 
-world.rooms = {room, room2}
+world.rooms = {room}
 
 if args.testSprite then
 	room:add(content[args.testSprite](SCREEN_WIDTH - 4,5))
 end
 
 paused = false
+lost = false
 
 -- Lua side of game loop
 function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	verboseFailure(function() -- get useful error traceback
 		
-		if not paused then
+		if not paused --[[and not lost]] then
+			world.timer = world.timer - 30
+			if world.timer <= 0 then
+				lost = true
+			end
+		
 			world.hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 
 			tick(time)

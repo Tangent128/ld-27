@@ -13,6 +13,7 @@ GRAVITY = -0.1
 -- global state
 hero = false
 camera = false
+timer = 10000
 rooms = {} -- list of currently valid rooms
 
 ------------------------------------------------------------ Sprite Objects
@@ -74,8 +75,8 @@ function Sprite:locateHero()
 end
 
 function Sprite:intersect(other)
-	local bottom = self.y
-	local top = bottom + self.h
+
+	if self.room ~= other.room then return false end
 
 	if self.x + self.w < other.x then return false end
 	if self.x > other.x + other.w then return false end
@@ -152,7 +153,7 @@ function Sprite:physicsStep(fraction, boundsOnly)
 			if lgx >= 0 and lgx < room.w
 			and lgy >= 0 and lgy < room.h then
 			
-				if boundsOnly then return false end
+				if boundsOnly then return false, room end
 				
 				-- test against room's tiles
 				
@@ -219,8 +220,19 @@ function Sprite:physicsStep(fraction, boundsOnly)
 		end
 	end
 
+	-- set position
 	self.x = x
 	self.y = y
+	
+	-- jump rooms if appropriate
+	boundsOnly = true
+	local _, centerRoom = collideWorldCheck(nil, gx + w/2, gy + h/2)
+	if centerRoom ~= myRoom then
+		--print("jump", self.x, self.y)
+		centerRoom:add(self)
+		--print("", self.x, self.y)
+	end
+	
 end
 
 ----------------------------------------------- "brain" Coroutine Functions
