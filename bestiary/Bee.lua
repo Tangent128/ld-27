@@ -27,13 +27,8 @@ function Bee:brain()
 		
         self.vx = hx - self.x
         self.vy = hy - self.y
-        
-        local magnitude = ( (self.vx^2) +(self.vy^2))^0.5 
-	
-	if magnitude <= 0.001 then magnitude = 0.001 end
-	
-        self.vx = self.vx * speed / magnitude
-        self.vy = self.vy * speed / magnitude
+
+	self:normalizeSpeed(speed)        
 		
 	self:floatPhysics()
 
