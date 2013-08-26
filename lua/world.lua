@@ -331,6 +331,7 @@ function Room:init(w, h, sheet)
 	
 	self.grid = {}
 	self.sprites = {}
+	self.garbage = {}
 	
 	self.x = 0
 	self.y = 0
@@ -355,7 +356,13 @@ function Room:add(obj)
 	self.sprites[obj] = obj
 end
 function Room:remove(obj)
-	self.sprites[obj] = nil
+	self.garbage[obj] = obj
+end
+function Room:cleanup()
+	for obj in pairs(self.garbage) do
+		self.sprites[obj] = nil
+	end
+	self.garbage = {}
 end
 
 function Room:setGrid(x,y, tile)
@@ -369,8 +376,14 @@ end
 
 function Room:tick(timeDiff)
 	
+	-- run ticks & brains
 	for sprite in pairs(self.sprites) do
 		sprite:tick(timeDiff)
+	end
+	
+	-- deal with deleted objects outside of iteration
+	for _, room in pairs(rooms) do
+		room:cleanup()
 	end
 	
 end
