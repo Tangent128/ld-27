@@ -7,6 +7,19 @@ local Projectile = require "Projectile"
 local AnvilSheet = sprite.SpriteSheet("bestiary/FlyingAnvilSheet.png", 2,2);
 local Anvil = world.Sprite(0,0, 1, AnvilSheet)
 
+Anvil.hostile = true
+Anvil.hp = 5
+
+function Anvil:getShot(bullet)
+	if not bullet.hostile then
+		--and bullet.y < self.y + 1
+        Anvil.hp = Anvil.hp - 1
+        if Anvil.hp <= 0 then
+            self:explode()
+        end
+	end
+end
+
 local args = args
 
 function Anvil:brain()

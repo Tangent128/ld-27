@@ -5,6 +5,15 @@ local world = require "world"
 local BeeSheet = sprite.SpriteSheet("bestiary/BeeSheet.png", 2,2);
 local Bee = world.Sprite(0,0, 1, BeeSheet)
 
+Bee.hostile = true
+
+function Bee:getShot(bullet)
+	if not bullet.hostile then
+		--and bullet.y < self.y + 1
+		self:explode()
+	end
+end
+
 function Bee:brain()
 
 	local animate = self:wrapLoop(function()
@@ -52,6 +61,13 @@ function Bee:brain()
         --print (velx, vely)
 
         --print (hx, hy, diffx, diffy)
+
+        if self:intersect(world.hero) then
+			--print "BZZZZT!"
+			if world.hero.getShot then 
+                world.hero:getShot(self)
+            end
+		end
 
 	end
 end
