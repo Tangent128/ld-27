@@ -75,9 +75,9 @@ end
 
 ------------------------------------------------------------ Sprite Physics
 
-function Sprite:gravityPhysics()
+function Sprite:gravityPhysics(boundsOnly)
 	self.vy = self.vy + GRAVITY
-	self:floatPhysics()
+	self:floatPhysics(boundsOnly)
 end
 
 function Sprite:floatPhysics(boundsOnly)

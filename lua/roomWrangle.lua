@@ -10,32 +10,36 @@ local _ENV = {}
 Camera = world.Sprite(0,0, 1, content.GreenTiles)
 
 -- override normal size with screen bounds
-Camera.w = SCREEN_WIDTH
-Camera.h = SCREEN_HEIGHT
+function Camera:init(...)
+	world.Sprite.init(self, ...)
+	
+	self.w = SCREEN_WIDTH
+	self.h = SCREEN_HEIGHT
+end
 
 function Camera:brain()
 	
-	self.y = 0
-	self.x = 1
-	self.vx = 0.1
+	self.y = 5
+	self.x = 10
+	self.vx = -0.1
 
 	while self:yield() do
 	
 		local hx, hy = self:locateHero()
 	
-		--[[while true do
+		while true do
 			repeat 
 				self:yield()
-				self:gravityPhysics()
+				self:gravityPhysics(true)
 			until self.onGround
 			repeat
 				self:yield()
-				self.vy = -0.2
-				self:floatPhysics()
+				self.vy = 0.2
+				self:floatPhysics(true)
 			until self.hitCeiling
-		end]]
+		end
 		
-		self:floatPhysics(true) -- only check against world bounds
+		self:gravityPhysics(true) -- only check against world bounds
 		--print(self.x, self.y, self.vx, self.vy)
 	
 	end
