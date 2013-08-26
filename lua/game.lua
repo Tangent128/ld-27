@@ -39,6 +39,8 @@ end
 function gameCycle(time, mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	verboseFailure(function() -- get useful error traceback
 		
+		hero.room.hero = hero
+		
 		hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 
 		tick(time)

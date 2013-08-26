@@ -2,7 +2,7 @@
 local sprite = require "sprite"
 local world = require "world"
 
-local HeroSheet = sprite.SpriteSheet("bestiary/ConeheadSheet.png", 2,3);
+local HeroSheet = sprite.SpriteSheet("gl/ProtagSheet.png", 2,6);
 local Hero = world.Sprite(0,0, 1, HeroSheet)
 
 function Hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
@@ -12,8 +12,14 @@ function Hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	if kU then ky = ky + 1 end
 	if kD then ky = ky - 1 end
 	
-	if kL then kx = kx - 1 end
-	if kR then kx = kx + 1 end
+	if kL then
+		kx = kx - 1
+		self.flip = true
+	end
+	if kR then
+		kx = kx + 1
+		self.flip = false
+	end
 	
 	if self.onGround then
 		self.vx = kx * 0.2
@@ -39,20 +45,14 @@ function Hero:brain()
 		if self.frame > 2 then
 			self.frame = 1
 		end
+		
+		self.frame = 1
 	end)
 	
 	while self:yield() do
 		animate()
 		
-		--speed = speed + 0.01
-		
-		--self.vx = self.flip and speed or -speed
-		
 		self:gravityPhysics()
-		
-		if self.collideSide then
-			self.flip = not self.flip
-		end
 		
 	end
 end
