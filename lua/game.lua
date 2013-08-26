@@ -3,6 +3,8 @@ TILE_SIZE = 32
 SCREEN_WIDTH = 640 / TILE_SIZE
 SCREEN_HEIGHT = 480 / TILE_SIZE
 
+FRAME_LENGTH = 30
+
 --SCREEN_WIDTH = 8
 --SCREEN_HEIGHT = 5
 
@@ -34,28 +36,26 @@ roomWrangle = require "roomWrangle"
 
 local function initWorld(...)
 
-    world.hero = content.Hero(3,3)
-    world.camera = roomWrangle.Camera()
+	world.hero = content.Hero(3,3)
+	world.camera = roomWrangle.Camera()
+	world.timer = 10000/5
 
-    room = roomGen.makeDebugRoom(SCREEN_WIDTH+1, SCREEN_HEIGHT + 10)
-    room2 = roomGen.makeDebugRoom2(SCREEN_WIDTH+1, SCREEN_HEIGHT + 5)
-    room2.x = SCREEN_WIDTH+1
-    room:add(world.hero)
-    room:add(world.camera)
+	room = roomGen.makeDebugRoom(SCREEN_WIDTH+1, SCREEN_HEIGHT + 10)
+	room:add(world.hero)
+	room:add(world.camera)
 
-    world.rooms = {room}
+	world.rooms = {room}
 
-    if args.testSprite then
-        room:add(content[args.testSprite](SCREEN_WIDTH - 5,5))
-    end
-    
-    paused = false
-    lost = false
-    newrun = true
-    reinit = false
-    world.timer = 10000
+	if args.testSprite then
+		room:add(content[args.testSprite](SCREEN_WIDTH - 5,5))
+	end
+
+	paused = true
+	title = true
+	lost = false
 
 end
+clicked = false
 
 initWorld()
 
@@ -63,76 +63,76 @@ initWorld()
 function gameCycle(time, mX, mY, mLeft, kU, kD, kL, kR, kSpace, kEscape)
 	verboseFailure(function() -- get useful error traceback
 
-        if world.timer <= 0 then
-            lost = true
-        end
-
-        if kEscape and not lost then
-            paused = true
-        end
-
-        if mLeft and not lost then
-            paused = false
-            newrun = false
-        end
-
-		if not paused and not newrun and not lost then
-			world.timer = world.timer - 30
-			if world.timer <= 0 then
-				lost = true
-			end
+		-- Input
 		
-			world.hero:input(mX, mY, kU, kD, kL, kR, kSpace, kEscape)
+		if kEscape then
+			paused = true
+		end
 
+		if mLeft then
+			if not clicked then
+				paused = false
+				title = false
+				clicked = true
+			
+				if lost then
+					initWorld()
+					title = true
+				end
+			end
+		else
+			clicked = false
+		end
+		--print(mLeft and "down" or "up", clicked and "click")
+
+		if not paused then
+			world.hero:input(mX, mY, kU, kD, kL, kR, kSpace, kEscape)
+		end
+		
+		-- Tick
+		if world.timer <= 0 then
+			paused = true
+			lost = true
+		end
+		
+		if not paused then
 			tick(time)
 		end
 		
+		-- Render
 		render()
-		
-		if paused and not newrun and not lost then
-			content.PauseScreen:fullscreen()
-		end
-        
-        if newrun and not lost then
-            content.StartScreen:fullscreen()
-        end
-        
-        if lost and not newrun and not kSpace then
-            content.GameOver:fullscreen()
-        end
-        
-        if lost and newrun then
-            content.StartScreen:fullscreen()
-            reinit = true
-        end
-
-        if lost and not newrun and kSpace then
-            newrun = true
-        end
-
-        if reinit and kSpace then
-            initWorld()
-        end
 
 	end)
 end
 
 function tick(time)
-	-- frame length
-	local timeDiff = 30
 	
+	-- tick for each room
 	for _, room in pairs(world.rooms) do
 		room:tick(timeDiff)
 	end
+	
+	-- Time Advance
+	world.timer = world.timer - FRAME_LENGTH
 end
 
 function render(mx, my)
 	
 	world.camera:renderView()
 	
-	-- cursor
+	-- overlays
 	if paused then
-	--content.???:draw(mx, my)
+		
+		if lost then
+			content.GameOver:fullscreen()
+		elseif title then
+			content.StartScreen:fullscreen()
+		else
+			content.PauseScreen:fullscreen()
+		end
+		
+		-- cursor?
+		--content.???:draw(mx, my)
 	end
 end
 
