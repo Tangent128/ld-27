@@ -84,6 +84,17 @@ function Sprite:normalizeSpeed(speed)
 	self.vy = self.vy * speed / magnitude
 end
 
+-- iterator for all the sprites in the room
+function Sprite:getAllSprites()
+	return coroutine.wrap(function()
+		for _, room in pairs(world.rooms) do
+			for sprite in pairs(room.sprites) do
+				coroutine.yield(sprite)
+			end
+		end
+	end)
+end
+
 function Sprite:intersect(other)
 
 	if self.room ~= other.room then return false end
