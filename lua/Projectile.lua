@@ -23,7 +23,7 @@ function Projectile:brain()
 		if self:intersect(obj) then
 			if obj ~= self.owner then
 				impact = true
-				print("hit", obj.sheet.filename)
+				--print("hit", obj.sheet.filename)
 			
 				-- objects may define an optional :getShot(bullet) method
 				if obj.getShot then obj:getShot(self) end

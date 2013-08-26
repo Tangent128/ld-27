@@ -43,19 +43,36 @@ function Hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 	
 end
 
+function Hero:getShot(bullet)
+	if bullet.hostile then
+		
+		-- fling upward
+		self.onGround = false
+		
+		self.vx = math.min(bullet.vx, 0) -- fling backwards, but never forwards
+		self.vy = math.abs(bullet.vx) -- fling w/ bullet's horizontal force
+		
+	end
+end
+
 function Hero:brain()
 
-    local gun = self:wrapLoop(function()
-        repeat self:yield() until self.wantToFire
-            if self.wantToFire == true then
-                local boolet = Projectile(0,0)
-                boolet.vx = 1.0
-                boolet.vy = 0
-                boolet.frame = 1
-                boolet.hostile = true
-                self:spawn(1,0, boolet)
-                self:waitFrames(5)
-            end
+	local gun = self:wrapLoop(function()
+	
+		repeat self:yield() until self.wantToFire
+		
+		local boolet = Projectile(0,0)
+		
+		boolet.vx = 1.0
+		boolet.vy = 0
+		boolet.frame = 1
+		boolet.owner = self
+		boolet.hostile = true
+		
+		self:spawn(1,0, boolet)
+		
+		--cooldown
+		self:waitFrames(5)
 	end)
 	
 	local animate = self:wrapLoop(function()
@@ -71,7 +88,7 @@ function Hero:brain()
 	
 	while self:yield() do
 		animate()
-        gun()
+		gun()
 
 		self:gravityPhysics()
 		
