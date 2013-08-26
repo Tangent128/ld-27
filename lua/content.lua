@@ -26,6 +26,7 @@ Bee = Sprite(0,0, 1, BeeSheet)
 
 Sheep = require "Sheep"
 Anvil = require "Anvil"
+Bee = require "Bee"
 
 package.path = lpath
 
