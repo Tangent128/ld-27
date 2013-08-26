@@ -65,17 +65,32 @@ function Hero:brain()
 	
 		repeat self:yield() until self.wantToFire
 		
-		local boolet = Projectile(0,0)
+        if not self.flip then
+
+            local boolet = Projectile(0,0)
 		
-		boolet.vx = 1.0
-		boolet.vy = 0
-		boolet.frame = 1
-		boolet.owner = self
+            boolet.vx = 1.0
+            boolet.vy = 0
+            boolet.frame = 1
+            boolet.owner = self
 		
-		self:spawn(1,0, boolet)
+            self:spawn(1,0, boolet)
 		
-		--cooldown
-		self:waitFrames(5)
+            --cooldown
+            self:waitFrames(5)
+        else
+            local boolet = Projectile(0,0)
+		
+            boolet.vx = -1.0
+            boolet.vy = 0
+            boolet.frame = 1
+            boolet.owner = self
+		
+            self:spawn(1,0, boolet)
+		
+            --cooldown
+            self:waitFrames(5)
+        end
 	end)
 	
 	local animate = self:wrapLoop(function()
