@@ -41,11 +41,11 @@ function Bee:brain()
             self.vx = velx
 		end
 
-        if (diffx < 0 and not self.flip) then
+        if (diffx < 0 and self.flip == false) then
             self.flip = not self.flip
         end
         
-        if (diffx > 0 and self.flip) then
+        if (diffx > 0 and self.flip == true) then
             self.flip = not self.flip
         end
 
