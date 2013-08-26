@@ -22,6 +22,8 @@ GameOver = SpriteSheet("gl/WIPGameOver3.png", 1, 1)
 ------------------------------------------------------------------ Bestiary?
 
 Hero = require "Hero"
+Puffball = require "Puffball"
+Projectile = require "Projectile"
 
 -- load from bestiary folder
 local lpath = package.path

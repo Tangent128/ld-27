@@ -7,7 +7,17 @@ local Sheep = world.Sprite(0,0, 1, SheepSheet)
 
 Sheep.hostile = true
 
+function Sheep:getShot(bullet)
+	if not bullet.hostile then
+		--and bullet.y < self.y + 1
+		self:explode()
+	end
+end
+
 function Sheep:brain()
+	
+	-- hack to make bounds better fit sprite
+	self.h = 1
 	
 	local animate = self:wrapLoop(function()
 		self:waitFrames(10) -- yields 10 times then returns
@@ -35,7 +45,7 @@ function Sheep:brain()
 		end
 		
 		if self:intersect(world.hero) then
-			print "BAAAAA!"
+			--print "BAAAAA!"
 			if world.hero.getShot then world.hero:getShot(self) end
 		end
 		
