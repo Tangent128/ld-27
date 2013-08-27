@@ -31,7 +31,7 @@ function genNextRoom(totalDifficulty)
 	local r = random(2)
 	
 	if r == 1 then
-		totalDifficulty = totalDifficulty / 2
+		totalDifficulty = totalDifficulty * 0.75
 		roomGen = makeHillyRoom
 	else
 		roomGen = makeFlatRoom
