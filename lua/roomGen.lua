@@ -1,9 +1,10 @@
 
 local setmetatable, pairs, print = setmetatable, pairs, print
+local floor = math.floor
 local random = math.random
 local Class = require "object".Class
 
-local content = require "content"
+local C = require "content"
 local world = require "world"
 local roomWrangle = require "roomWrangle"
 
@@ -17,15 +18,59 @@ local _ENV = {}
 
 ---------------------------------------------------------- high-level
 
-function genNextRoom(difficulty)
+local altRoomGens = {}
+function genNextRoom(totalDifficulty)
 
+	-- assume 4/3 seconds to walk 10 tiles
 	local roomLen = 30
+	local difficulty = 4
 
---	local r = random(4)
+	local mobs = {}
+
+	local roomGen = makeFlatRoom
 	
---	if()
+	-- cheap, reliable, dull way to make room harder: make it longer
+	local function default(hardness)
+		difficulty = difficulty + hardness
+		roomLen = roomLen + hardness*4.5
+	end
+	
+	local function add(hardness, mob, count)
+		local newDifficulty = difficulty + hardness
+		
+		if newDifficulty > totalDifficulty then
+			-- wrap up
+			default(totalDifficulty - difficulty)
+			
+			totalDifficulty = difficulty
+		else
+			difficulty = newDifficulty
+			for i = 1, count do
+				mobs[#mobs + 1] = mob(0,SCREEN_HEIGHT - 6)
+			end
+		end
+	end
+	
+	-- loop through ways to make the level harder
+	while difficulty < totalDifficulty do
+		local r = random(3)
+	
+		if r == 1 then
+			--  Anvil to dodge
+			add(1, C.Anvil, 1)
+		elseif r == 2 then
+			-- Sheep!
+			add(1, C.Sheep, 1)
+		else
+			default(1)
+		end
+		
+		
+	end
 
-	return makeFlatRoom(roomLen, {})
+	roomLen = floor(roomLen)
+
+	return roomGen(roomLen, mobs)
 	
 end
 
@@ -72,6 +117,21 @@ function placeFlag(room, y, nextFunc)
 	
 end
 
+function sprinkleMobs(room, mobs)
+	local interval = room.w / (#mobs + 1)
+
+	local x = interval/2
+	for i = 1,#mobs do
+		local dx = (random()-0.5) * interval/2
+		
+		mobs[i].x = x+dx
+		room:add(mobs[i])
+		--print(mobs[i], x)
+		
+		x = x + interval
+	end
+end
+
 -------------------------------------------------------- room types
 
 function makeDebugRoom(w, h)
@@ -114,7 +174,7 @@ end
 
 function makeFlatRoom(len, mobs)
 	local w, h = len, SCREEN_HEIGHT * 2
-	local room = Room(w, h, content.GreenTiles)
+	local room = Room(w, h, C.GreenTiles)
 	
 	block(room, 0,0, w,h, world.BLANK)
 	ink(room, 0,1, w-1,1, world.FLAT)
@@ -123,6 +183,24 @@ function makeFlatRoom(len, mobs)
 	end
 
 	placeFlag(room, 2)
+	sprinkleMobs(room, mobs)
+
+	return room
+	
+end
+
+function makeHillyRoom(len, mobs)
+	local w, h = len, SCREEN_HEIGHT * 2
+	local room = Room(w, h, C.GreenTiles)
+	
+	block(room, 0,0, w,h, world.BLANK)
+	ink(room, 0,1, w-1,1, world.FLAT)
+	for i = 0,w-1 do
+		room:setGrid(i,0, i%2 == 1 and world.SOLID or world.STONE)
+	end
+
+	placeFlag(room, 2)
+	sprinkleMobs(room, mobs)
 
 	return room
 	

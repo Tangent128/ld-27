@@ -14,7 +14,9 @@ function Puffball:brain()
 		self:waitFrames(2)
 	end
 	
-	self:die()		
+	self:die()
+	
+	repeat self:yield until false
 end
 
 return Puffball
