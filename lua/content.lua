@@ -36,6 +36,7 @@ Bee = require "Bee"
 Projectile = require "Projectile"
 Clock = require "Clock"
 Conehead = require "Conehead"
+--Pitaya = require "Pitaya"
 
 package.path = lpath
 

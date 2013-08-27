@@ -18,7 +18,7 @@ function Sheep:brain()
 	
 	-- hack to make bounds better fit sprite
 	self.h = 1
-	
+
 	local animate = self:wrapLoop(function()
 		self:waitFrames(10) -- yields 10 times then returns
 	
@@ -33,10 +33,16 @@ function Sheep:brain()
 	while self:yield() do
 		animate()
 		
+        local rand = math.random(1,10)
+
 		speed = math.min(speed + 0.02, 1.0)
 		
 		self.vx = self.flip and speed or -speed
 		
+        if rand < 2 and self.onGround then
+            self.vy = 0.5
+        end
+
 		self:gravityPhysics()
 		
 		if self.collideSide then
