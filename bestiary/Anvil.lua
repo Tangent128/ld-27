@@ -73,7 +73,7 @@ function Anvil:brain()
 			self:gravityPhysics()
 			
 			if self:intersect(world.hero) then
-				if world.hero.getHit then world.hero:getHit(-3.0, 1.0) end
+				if world.hero.getHit then world.hero:getHit(-1.5, 1.0) end
 			end
 			
 		else

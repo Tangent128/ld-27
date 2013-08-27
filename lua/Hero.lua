@@ -44,11 +44,17 @@ function Hero:input(mx, my, kU, kD, kL, kR, kSpace, kEscape)
 end
 
 function Hero:getHit(vx, vy)
-	-- fling upward
-	self.onGround = false
+	
+	-- mercy in mobs!
+	if self.hitCooldown and self.hitCooldown <= 0 then
+		-- fling upward
+		self.onGround = false
 
-	self.vx = math.min(vx, 0) -- fling backwards, but never forwards
-	self.vy = math.abs(vx) -- fling w/ bullet's horizontal force
+		self.vx = math.max(math.min(vx, 0), -0.5) -- fling backwards, but never forwards
+		self.vy = math.min(math.abs(vx), 0.8) -- fling w/ bullet's horizontal force
+		
+		self.hitCooldown = 30
+	end
 end
 
 function Hero:getShot(bullet)
@@ -60,6 +66,8 @@ function Hero:getShot(bullet)
 end
 
 function Hero:brain()
+	
+	self.hitCooldown = 30
 
 	local gun = self:wrapLoop(function()
 	
@@ -109,7 +117,8 @@ function Hero:brain()
 		gun()
 
 		self:gravityPhysics()
-		
+
+		self.hitCooldown = self.hitCooldown - 1		
 	end
 end
 

@@ -32,7 +32,7 @@ function genNextRoom(totalDifficulty)
 	-- cheap, reliable, dull way to make room harder: make it longer
 	local function default(hardness)
 		difficulty = difficulty + hardness
-		roomLen = roomLen + hardness*4.5
+		roomLen = roomLen + hardness*4
 	end
 	
 	local function add(hardness, mob, count)
@@ -40,7 +40,11 @@ function genNextRoom(totalDifficulty)
 		
 		if newDifficulty > totalDifficulty then
 			-- wrap up
-			default(totalDifficulty - difficulty)
+			
+			-- sometimes be merciful and don't extract extra difficulty
+			if random(2) == 1 then
+				default(totalDifficulty - difficulty)
+			end
 			
 			totalDifficulty = difficulty
 		else
@@ -57,10 +61,10 @@ function genNextRoom(totalDifficulty)
 	
 		if r == 1 then
 			--  Anvil to dodge
-			add(1, C.Anvil, 1)
+			add(3, C.Anvil, 1)
 		elseif r == 2 then
 			-- Sheep!
-			add(1, C.Sheep, 1)
+			add(2, C.Sheep, 1)
 		else
 			default(1)
 		end
@@ -125,6 +129,7 @@ function sprinkleMobs(room, mobs)
 		local dx = (random()-0.5) * interval/2
 		
 		mobs[i].x = x+dx
+		mobs[i].vy = -10.0
 		room:add(mobs[i])
 		--print(mobs[i], x)
 		

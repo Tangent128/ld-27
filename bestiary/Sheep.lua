@@ -33,7 +33,7 @@ function Sheep:brain()
 	while self:yield() do
 		animate()
 		
-		speed = math.min(speed + 0.02, 2.0)
+		speed = math.min(speed + 0.02, 1.0)
 		
 		self.vx = self.flip and speed or -speed
 		
