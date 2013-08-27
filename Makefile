@@ -14,16 +14,16 @@ unspecified:
 	@echo "need to 'make linux.exe', 'make osx.exe', 'make windows.exe', etc"
 
 linux.exe: $(O_FILES)
-	gcc -o linux.exe -lGL $(LFLAGS) $(O_FILES)
+	gcc -o linux.exe $(O_FILES) -lGL $(LFLAGS)
 
 osx.exe: $(O_FILES)
-	gcc -o osx.exe -framework Foundation -framework OpenGL $(LFLAGS) $(O_FILES)
+	gcc -o osx.exe $(O_FILES) -framework Foundation -framework OpenGL $(LFLAGS)
 
 
 # compile
-.SUFFIXES: .c .o
-.c.o:
-	gcc -c -o $@ $(LUA_CFLAGS) $<
+#.SUFFIXES: .c .o
+#.c.o:
+#	gcc -c -o $@ $(LUA_CFLAGS) $<
 	
 
 # libs
@@ -32,8 +32,10 @@ $(LUA_LIB):
 
 # files
 c/game.o: c/game.c $(PREDEPS)
+	gcc -c -o $@ $(LUA_CFLAGS) $<
 c/sprite.o: c/sprite.c $(PREDEPS)
-
+	gcc -c -o $@ $(LUA_CFLAGS) $<
+	
 clean:
 	cd $(LUA_DIR) && make clean
 	rm -f c/*.o
