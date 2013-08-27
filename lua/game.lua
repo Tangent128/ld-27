@@ -43,20 +43,25 @@ local function initWorld(...)
 	world.camera = roomWrangle.Camera()
 	world.timer = 10000
 
-	room = roomGen.makeDebugRoom(SCREEN_WIDTH+1, SCREEN_HEIGHT + 10)
-	room:add(world.hero)
-	room:add(world.camera)
-
-	world.rooms = {room}
-
-	if args.testSprite then
-		room:add(content[args.testSprite](SCREEN_WIDTH - 5,5))
-		world.timer = 10000
-	end
-	
 	if args.time then
 		world.timer = tonumber(args.time)
 	end
+
+	if args.testSprite then
+		room = roomGen.makeDebugRoom(SCREEN_WIDTH+1, SCREEN_HEIGHT + 10)
+		room:add(world.hero)
+		room:add(world.camera)
+
+		world.rooms = {room}
+
+		room:add(content[args.testSprite](SCREEN_WIDTH - 5,5))
+	else
+		room = roomGen.genNextRoom(world.timer / 1000)
+		room:add(world.hero)
+		room:add(world.camera)
+		
+		world.rooms = {room}
+	end	
 
 	paused = true
 	title = true

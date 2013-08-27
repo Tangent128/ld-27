@@ -24,7 +24,6 @@ local args = args
 
 function Anvil:brain()
 	
-	local falling = true
 
 	local animate = self:wrapLoop(function()
 		self:waitFrames(10) -- yields 10 times then returns
@@ -61,6 +60,9 @@ function Anvil:brain()
         until self.hitCeiling
     end]]
 
+	local falling = true
+	local riseTo = 0
+
 	while self:yield() do
 		animate()
 		if args.anvilGun then
@@ -77,10 +79,15 @@ function Anvil:brain()
 		else
 			self.vy = 0.2
 			self:floatPhysics()
+			
+			if self.y >= riseTo then
+				falling = true
+			end
 		end
 
 		if self.onGround then
 			falling = false
+			riseTo = self.y + 10
 		end
 
 		if self.hitCeiling then
