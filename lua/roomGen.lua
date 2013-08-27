@@ -227,11 +227,11 @@ function makeHillyRoom(len, mobs)
 		local cx = floor(x+dx)
 		local h = random(2,3)
 		
-		print("hill", h)
+		--print("hill", h)
 		for tier=1,h do
 			local left = max(4,cx-tier)
 			local right = min(w-4,cx+tier)
-			print("tier", left, right)
+			--print("tier", left, right)
 			ink(room, left,2+h-tier, right,2+h-tier, world.STONE)
 		end
 		
