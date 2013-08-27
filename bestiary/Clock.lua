@@ -7,6 +7,14 @@ local Clock = world.Sprite(0,0, 1, ClockSheet)
 
 Clock.hostile = true
 
+function Clock:getShot(bullet)
+	if not bullet.hostile then
+		--and bullet.y < self.y + 1
+		self:explode()
+        world.timer = world.timer + 10000
+	end
+end
+
 function Clock:brain()
 	
 	local animate = self:wrapLoop(function()
