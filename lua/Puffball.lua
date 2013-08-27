@@ -16,7 +16,7 @@ function Puffball:brain()
 	
 	self:die()
 	
-	repeat self:yield until false
+	repeat self:yield() until false
 end
 
 return Puffball
