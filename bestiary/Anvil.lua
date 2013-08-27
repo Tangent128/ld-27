@@ -8,13 +8,13 @@ local AnvilSheet = sprite.SpriteSheet("bestiary/FlyingAnvilSheet.png", 2,2);
 local Anvil = world.Sprite(0,0, 1, AnvilSheet)
 
 Anvil.hostile = true
-Anvil.hp = 5
+Anvil.hp = 3
 
 function Anvil:getShot(bullet)
 	if not bullet.hostile then
 		--and bullet.y < self.y + 1
-        Anvil.hp = Anvil.hp - 1
-        if Anvil.hp <= 0 then
+        self.hp = self.hp - 1
+        if self.hp <= 0 then
             self:explode()
         end
 	end
@@ -40,7 +40,6 @@ function Anvil:brain()
 		local boolet = Projectile(0,0)
 		local hx, hy = self:locateHero()
 		boolet.vx = hx - self.x
-		boolet.vy = hy - self.y
 		boolet:normalizeSpeed(1.0)
         boolet.frame = 2
         boolet.owner = self

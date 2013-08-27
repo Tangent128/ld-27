@@ -35,6 +35,7 @@ Anvil = require "Anvil"
 Bee = require "Bee"
 Projectile = require "Projectile"
 Clock = require "Clock"
+Conehead = require "Conehead"
 
 package.path = lpath
 
