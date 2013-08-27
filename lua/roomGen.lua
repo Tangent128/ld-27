@@ -1,6 +1,6 @@
 
 local setmetatable, pairs, print = setmetatable, pairs, print
-local floor = math.floor
+local floor,min,max = math.floor,math.min,math.max
 local random = math.random
 local Class = require "object".Class
 
@@ -18,7 +18,6 @@ local _ENV = {}
 
 ---------------------------------------------------------- high-level
 
-local altRoomGens = {}
 function genNextRoom(totalDifficulty)
 
 	-- assume 4/3 seconds to walk 10 tiles
@@ -27,7 +26,16 @@ function genNextRoom(totalDifficulty)
 
 	local mobs = {}
 
-	local roomGen = makeFlatRoom
+	local roomGen
+	
+	local r = random(2)
+	
+	if r == 1 then
+		totalDifficulty = totalDifficulty / 2
+		roomGen = makeHillyRoom
+	else
+		roomGen = makeFlatRoom
+	end
 	
 	-- cheap, reliable, dull way to make room harder: make it longer
 	local function default(hardness)
@@ -42,7 +50,7 @@ function genNextRoom(totalDifficulty)
 			-- wrap up
 			
 			-- sometimes be merciful and don't extract extra difficulty
-			if random(2) == 1 then
+			if random(3) ~= 1 then
 				default(totalDifficulty - difficulty)
 			end
 			
@@ -196,16 +204,28 @@ end
 
 function makeHillyRoom(len, mobs)
 	local w, h = len, SCREEN_HEIGHT * 2
-	local room = Room(w, h, C.GreenTiles)
+	local room = makeFlatRoom(len, mobs)
 	
-	block(room, 0,0, w,h, world.BLANK)
-	ink(room, 0,1, w-1,1, world.FLAT)
-	for i = 0,w-1 do
-		room:setGrid(i,0, i%2 == 1 and world.SOLID or world.STONE)
-	end
+	local interval = 8
+	local hills = floor(w/interval)
 
-	placeFlag(room, 2)
-	sprinkleMobs(room, mobs)
+	local x = interval/2
+	for i = 1,hills do
+		local dx = (random()-0.5) * interval/2
+		
+		local cx = floor(x+dx)
+		local h = random(2,3)
+		
+		print("hill", h)
+		for tier=1,h do
+			local left = max(4,cx-tier)
+			local right = min(w-4,cx+tier)
+			print("tier", left, right)
+			ink(room, left,2+h-tier, right,2+h-tier, world.STONE)
+		end
+		
+		x = x + interval
+	end
 
 	return room
 	
