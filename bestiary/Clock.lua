@@ -2,7 +2,7 @@
 local sprite = require "sprite"
 local world = require "world"
 
-local ClockSheet = sprite.SpriteSheet("bestiary/ClockSheet.png", 2,3);
+local ClockSheet = sprite.SpriteSheet("bestiary/ClockSheet.png", 1,3);
 local Clock = world.Sprite(0,0, 1, ClockSheet)
 
 Clock.hostile = true

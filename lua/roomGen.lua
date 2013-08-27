@@ -63,16 +63,27 @@ function genNextRoom(totalDifficulty)
 		end
 	end
 	
+	local usedClock = false
+	
 	-- loop through ways to make the level harder
 	while difficulty < totalDifficulty do
-		local r = random(3)
+		local r = random(8)
 	
 		if r == 1 then
-			--  Anvil to dodge
-			add(3, C.Anvil, 1)
+			add(2, C.Anvil, 1)
 		elseif r == 2 then
-			-- Sheep!
 			add(2, C.Sheep, 1)
+		elseif r == 3 then
+			add(1, C.Bee, 1)
+		elseif r == 4 then
+			add(2, C.Conehead, 1)
+		elseif r == 5 then
+			if usedClock then
+				add(-11, C.Clock, 1)
+				usedClock = true
+			else
+				default(5)
+			end
 		else
 			default(1)
 		end
