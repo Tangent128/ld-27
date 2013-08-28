@@ -275,6 +275,14 @@ void drawBackground( /*...*/ ) {
 // public call to setup GL constants
 void initGL() {
 	
+	// init GLEW
+	GLenum error = glewInit();
+	if(error != GLEW_OK)
+	{
+		printf("Error initializing GLEW: %s\n", glewGetErrorString(error));
+		exit(1);
+	}
+	
 	// misc. settings
 	glClearColor( 0, 0, 100, 255 );
 	glEnable(GL_BLEND);
